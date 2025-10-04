@@ -1,0 +1,16 @@
+---
+title: "Proyecto Final — Machine Learning"
+---
+
+# Bienvenido
+
+Este sitio contiene el desarrollo de dos tareas de **aprendizaje supervisado**:
+
+- **Clasificación:** incidentes (accidentes con heridos) con Regresión Logística.
+- **Regresión:** (PM2.5) — lo agregaremos como segunda página.
+
+---
+
+**Autor:** Noe Sanchez  
+**Año:** 2025  
+**Curso:** ML

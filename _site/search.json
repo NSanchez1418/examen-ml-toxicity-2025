@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "clasificacion_incidentes.html",
+    "href": "clasificacion_incidentes.html",
+    "title": "Clasificación — Incidentes (julio 2025)",
+    "section": "",
+    "text": "title: “Clasificación — Incidentes (julio 2025)” format: html: embed-resources: true theme: cosmo toc: true jupyter: python3 execute: echo: true warning: false error: false —"
+  },
+  {
+    "objectID": "clasificacion_incidentes.html#cargar-librerías-y-dataset",
+    "href": "clasificacion_incidentes.html#cargar-librerías-y-dataset",
+    "title": "Clasificación — Incidentes (julio 2025)",
+    "section": "1) Cargar librerías y dataset",
+    "text": "1) Cargar librerías y dataset\nimport pandas as pd import altair as alt from sklearn.model_selection import train_test_split from sklearn.preprocessing import StandardScaler from sklearn.pipeline import Pipeline from sklearn.linear_model import LogisticRegression from sklearn.metrics import ( accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve, confusion_matrix )"
+  }
+]

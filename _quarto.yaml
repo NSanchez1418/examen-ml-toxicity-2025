@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Machine Learning — Proyecto"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: clasificacion_incidentes.qmd
+        text: Clasificación
+      # si aún no tienes la página de regresión, deja comentada la línea de abajo:
+      # - href: regresion_pm25.qmd
+      #   text: Regresión
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    fig-align: center
+    embed-resources: true

@@ -1,0 +1,100 @@
+---
+title: "Classification — Incidentes"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    fig-align: center
+---
+
+```{python}
+# 1. Importar librerías
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score,
+    ConfusionMatrixDisplay, RocCurveDisplay
+)
+
+# 2. Cargar dataset
+df = pd.read_csv("data/incidentes_clasificacion_ready.csv")
+
+y = df["accidente_con_heridos"]
+X = df.drop(columns=["accidente_con_heridos"])
+
+print("Dimensiones:", X.shape)
+print("Distribución de clases:")
+print(y.value_counts())
+
+# 3. Dividir en train/test
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 4. Entrenar modelo SIN pipeline
+model = LogisticRegression(max_iter=100000, class_weight="balanced")
+model.fit(X_train, y_train)
+
+# 5. Predicciones
+y_pred = model.predict(X_test)
+y_proba = model.predict_proba(X_test)[:,1]
+
+# 6. Métricas
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, zero_division=0)
+recall = recall_score(y_test, y_pred, zero_division=0)
+f1 = f1_score(y_test, y_pred, zero_division=0)
+
+print("\n==== Resultados SIN Pipeline ====")
+print(f"Accuracy : {accuracy:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall   : {recall:.4f}")
+print(f"F1 Score : {f1:.4f}")
+
+# 7. Matriz de confusión
+ConfusionMatrixDisplay.from_predictions(y_test, y_pred)
+plt.title("Matriz de Confusión — Sin Pipeline")
+plt.show()
+
+# 8. Curva ROC
+RocCurveDisplay.from_predictions(y_test, y_proba)
+plt.title("Curva ROC — Sin Pipeline")
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# ======== CON PIPELINE ========
+
+pipe = Pipeline([
+    ("scaler", StandardScaler()),
+    ("logreg", LogisticRegression(max_iter=100000, class_weight="balanced"))
+])
+
+pipe.fit(X_train, y_train)
+y_pred_pipe = pipe.predict(X_test)
+y_proba_pipe = pipe.predict_proba(X_test)[:,1]
+
+accuracy = accuracy_score(y_test, y_pred_pipe)
+precision = precision_score(y_test, y_pred_pipe, zero_division=0)
+recall = recall_score(y_test, y_pred_pipe, zero_division=0)
+f1 = f1_score(y_test, y_pred_pipe, zero_division=0)
+
+print("\n==== Resultados CON Pipeline ====")
+print(f"Accuracy : {accuracy:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall   : {recall:.4f}")
+print(f"F1 Score : {f1:.4f}")
+
+ConfusionMatrixDisplay.from_predictions(y_test, y_pred_pipe)
+plt.title("Matriz de Confusión — Con Pipeline")
+plt.show()
+
+RocCurveDisplay.from_predictions(y_test, y_proba_pipe)
+plt.title("Curva ROC — Con Pipeline")
+plt.grid(True, alpha=0.3)
+plt.show()
+```
