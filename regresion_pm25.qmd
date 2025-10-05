@@ -2,6 +2,7 @@
 title: "Regresión — PM2.5 (Ecuador)"
 format:
   html:
+    theme: cosmo
     toc: true
     code-fold: true
     fig-align: center
@@ -9,7 +10,7 @@ format:
 execute:
   echo: true
   warning: false
-  error: false
+  error: true   # ponlo true mientras probamos; luego puedes volver a false
 ---
 
 ## 1) Cargar y explorar
@@ -22,7 +23,8 @@ import numpy as np
 df = pd.read_csv("data/pm25_ecuador_clean.csv")
 
 print("Shape:", df.shape)
-display(df.head(8))
+display(df.head(8))Get-Item .\docs\regresion_pm25.html
+
 
 # Nos quedamos SOLO con columnas numéricas (la consigna pide evitar categóricas)
 num = df.select_dtypes(include=[np.number]).copy()
@@ -30,12 +32,12 @@ print("Numéricas:", list(num.columns))
 display(num.describe().T)
 
 ## 2) Seleccionar variables (X, y) y train/test split
-
 from sklearn.model_selection import train_test_split
 
 # Elegir la y:
-# Intentamos 'pm25', si no existe tomamos la última numérica como objetivo (fallback)
+# Si existe una columna 'pm25', la usamos. Si no existe, tomamos la última columna numérica como fallback.
 target_name = "pm25" if "pm25" in num.columns else num.columns[-1]
+
 y = num[target_name].values
 X = num.drop(columns=[target_name]).values
 
@@ -46,19 +48,20 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, random_state=42
 )
 
+
 ## 3) Pipeline + LinearRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 
 pipe = Pipeline([
-    ("scaler", StandardScaler()),        # en lineal no siempre es necesario, pero es buena práctica
+    ("scaler", StandardScaler()),  # en regresión lineal no siempre es obligatorio, pero es buena práctica
     ("linreg", LinearRegression())
 ])
 
 pipe.fit(X_train, y_train)
-
 y_pred = pipe.predict(X_test)
+
 
 ## 4) Métricas (MSE y R²)
 
@@ -67,46 +70,48 @@ from sklearn.metrics import mean_squared_error, r2_score
 mse = mean_squared_error(y_test, y_pred)
 r2  = r2_score(y_test, y_pred)
 
-print(f"MSE: {mse:,.3f}")
-print(f"R² : {r2:,.4f}")
+print(f"MSE : {mse:,.4f}")
+print(f"R²  : {r2:,.4f}")
+
 
 ## 5) Visualización — Real vs Predicho
 
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(6,6))
-plt.scatter(y_test, y_pred, s=10, alpha=0.5)
-minv = min(y_test.min(), y_pred.min())
-maxv = max(y_test.max(), y_pred.max())
-plt.plot([minv, maxv], [minv, maxv], lw=2)  # línea y=x
-plt.xlabel("Real (y_test)")
-plt.ylabel("Predicho (y_pred)")
-plt.title("Comparación valores reales vs predichos")
-plt.grid(True)
+plt.figure()
+plt.scatter(y_test, y_pred, alpha=0.4)
+plt.xlabel("Real")
+plt.ylabel("Predicho")
+plt.title("PM2.5 — Real vs Predicho")
+minv = float(np.min([y_test.min(), y_pred.min()]))
+maxv = float(np.max([y_test.max(), y_pred.max()]))
+plt.plot([minv, maxv], [minv, maxv])  # línea y=x
+plt.tight_layout()
 plt.show()
 
-## 6) Curva de aprendizaje (opcional recomendado)
 
+## 6) Curva de aprendizaje (opcional recomendado)
 from sklearn.model_selection import learning_curve
-import numpy as np
 
 train_sizes, train_scores, valid_scores = learning_curve(
-    pipe, X, y, cv=5, scoring="r2",
-    train_sizes=np.linspace(0.1, 1.0, 5), n_jobs=None, random_state=42
+    pipe, X, y, cv=5, scoring="r2", n_jobs=None,
+    train_sizes=np.linspace(0.1, 1.0, 6), shuffle=True, random_state=42
 )
 
 train_mean = train_scores.mean(axis=1)
 valid_mean = valid_scores.mean(axis=1)
 
-plt.figure(figsize=(7,4))
+plt.figure()
 plt.plot(train_sizes, train_mean, marker="o", label="Train R²")
-plt.plot(train_sizes, valid_mean, marker="o", label="Valid R²")
-plt.xlabel("Tamaño del conjunto de entrenamiento")
+plt.plot(train_sizes, valid_mean, marker="s", label="Valid R²")
+plt.xlabel("Tamaño de entrenamiento")
 plt.ylabel("R²")
 plt.title("Curva de aprendizaje")
 plt.legend()
-plt.grid(True)
+plt.tight_layout()
 plt.show()
+
+```
 
 ##7) Conclusiones rápidas
 #Objetivo: predecir el valor continuo de PM2.5 usando solo variables numéricas.
