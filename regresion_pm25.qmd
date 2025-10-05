@@ -1,0 +1,124 @@
+---
+title: "Regresión — PM2.5 (Ecuador)"
+format:
+  html:
+    toc: true
+    code-fold: true
+    fig-align: center
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+## 1) Cargar y explorar
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Ruta al dataset limpio que generamos antes
+df = pd.read_csv("data/pm25_ecuador_clean.csv")
+
+print("Shape:", df.shape)
+display(df.head(8))
+
+# Nos quedamos SOLO con columnas numéricas (la consigna pide evitar categóricas)
+num = df.select_dtypes(include=[np.number]).copy()
+print("Numéricas:", list(num.columns))
+display(num.describe().T)
+
+## 2) Seleccionar variables (X, y) y train/test split
+
+from sklearn.model_selection import train_test_split
+
+# Elegir la y:
+# Intentamos 'pm25', si no existe tomamos la última numérica como objetivo (fallback)
+target_name = "pm25" if "pm25" in num.columns else num.columns[-1]
+y = num[target_name].values
+X = num.drop(columns=[target_name]).values
+
+print("Objetivo (y):", target_name)
+print("X shape:", X.shape, "| y shape:", y.shape)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+## 3) Pipeline + LinearRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+pipe = Pipeline([
+    ("scaler", StandardScaler()),        # en lineal no siempre es necesario, pero es buena práctica
+    ("linreg", LinearRegression())
+])
+
+pipe.fit(X_train, y_train)
+
+y_pred = pipe.predict(X_test)
+
+## 4) Métricas (MSE y R²)
+
+from sklearn.metrics import mean_squared_error, r2_score
+
+mse = mean_squared_error(y_test, y_pred)
+r2  = r2_score(y_test, y_pred)
+
+print(f"MSE: {mse:,.3f}")
+print(f"R² : {r2:,.4f}")
+
+## 5) Visualización — Real vs Predicho
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(6,6))
+plt.scatter(y_test, y_pred, s=10, alpha=0.5)
+minv = min(y_test.min(), y_pred.min())
+maxv = max(y_test.max(), y_pred.max())
+plt.plot([minv, maxv], [minv, maxv], lw=2)  # línea y=x
+plt.xlabel("Real (y_test)")
+plt.ylabel("Predicho (y_pred)")
+plt.title("Comparación valores reales vs predichos")
+plt.grid(True)
+plt.show()
+
+## 6) Curva de aprendizaje (opcional recomendado)
+
+from sklearn.model_selection import learning_curve
+import numpy as np
+
+train_sizes, train_scores, valid_scores = learning_curve(
+    pipe, X, y, cv=5, scoring="r2",
+    train_sizes=np.linspace(0.1, 1.0, 5), n_jobs=None, random_state=42
+)
+
+train_mean = train_scores.mean(axis=1)
+valid_mean = valid_scores.mean(axis=1)
+
+plt.figure(figsize=(7,4))
+plt.plot(train_sizes, train_mean, marker="o", label="Train R²")
+plt.plot(train_sizes, valid_mean, marker="o", label="Valid R²")
+plt.xlabel("Tamaño del conjunto de entrenamiento")
+plt.ylabel("R²")
+plt.title("Curva de aprendizaje")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+##7) Conclusiones rápidas
+#Objetivo: predecir el valor continuo de PM2.5 usando solo variables numéricas.
+
+#Modelo: Pipeline(StandardScaler + LinearRegression).
+
+#Métricas: reporta MSE y R²; idealmente R² > 0 para que el modelo supere a una media constante.
+
+#Si el R² es bajo o negativo:
+
+#Revisa variables: quizá faltan características relevantes (meteorología, ubicación, hora, etc.).
+
+#Considera limpiar outliers o agregar transformaciones.
+
+#Intenta otro modelo (p.ej., RandomForestRegressor) si la consigna lo permite.

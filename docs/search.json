@@ -1,10 +1,52 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Proyecto Final — Machine Learning",
+    "objectID": "regresion_pm25.html",
+    "href": "regresion_pm25.html",
+    "title": "Regresión — PM2.5 (Ecuador)",
     "section": "",
-    "text": "Bienvenido\nEste sitio contiene el desarrollo de dos tareas de aprendizaje supervisado:\n\nClasificación: incidentes (accidentes con heridos) con Regresión Logística.\nRegresión: (PM2.5) — lo agregaremos como segunda página.\n\n\nAutor: Noe Sanchez\nAño: 2025\nCurso: ML"
+    "text": "import pandas as pd import numpy as np"
+  },
+  {
+    "objectID": "regresion_pm25.html#cargar-y-explorar",
+    "href": "regresion_pm25.html#cargar-y-explorar",
+    "title": "Regresión — PM2.5 (Ecuador)",
+    "section": "",
+    "text": "import pandas as pd import numpy as np"
+  },
+  {
+    "objectID": "regresion_pm25.html#seleccionar-variables-x-y-y-traintest-split",
+    "href": "regresion_pm25.html#seleccionar-variables-x-y-y-traintest-split",
+    "title": "Regresión — PM2.5 (Ecuador)",
+    "section": "2) Seleccionar variables (X, y) y train/test split",
+    "text": "2) Seleccionar variables (X, y) y train/test split\nfrom sklearn.model_selection import train_test_split"
+  },
+  {
+    "objectID": "regresion_pm25.html#pipeline-linearregression",
+    "href": "regresion_pm25.html#pipeline-linearregression",
+    "title": "Regresión — PM2.5 (Ecuador)",
+    "section": "3) Pipeline + LinearRegression",
+    "text": "3) Pipeline + LinearRegression\nfrom sklearn.pipeline import Pipeline from sklearn.preprocessing import StandardScaler from sklearn.linear_model import LinearRegression\npipe = Pipeline([ (“scaler”, StandardScaler()), # en lineal no siempre es necesario, pero es buena práctica (“linreg”, LinearRegression())])\npipe.fit(X_train, y_train)\ny_pred = pipe.predict(X_test)"
+  },
+  {
+    "objectID": "regresion_pm25.html#métricas-mse-y-r²",
+    "href": "regresion_pm25.html#métricas-mse-y-r²",
+    "title": "Regresión — PM2.5 (Ecuador)",
+    "section": "4) Métricas (MSE y R²)",
+    "text": "4) Métricas (MSE y R²)\nfrom sklearn.metrics import mean_squared_error, r2_score\nmse = mean_squared_error(y_test, y_pred) r2 = r2_score(y_test, y_pred)\nprint(f”MSE: {mse:,.3f}“) print(f”R² : {r2:,.4f}“)"
+  },
+  {
+    "objectID": "regresion_pm25.html#visualización-real-vs-predicho",
+    "href": "regresion_pm25.html#visualización-real-vs-predicho",
+    "title": "Regresión — PM2.5 (Ecuador)",
+    "section": "5) Visualización — Real vs Predicho",
+    "text": "5) Visualización — Real vs Predicho\nimport matplotlib.pyplot as plt\nplt.figure(figsize=(6,6)) plt.scatter(y_test, y_pred, s=10, alpha=0.5) minv = min(y_test.min(), y_pred.min()) maxv = max(y_test.max(), y_pred.max()) plt.plot([minv, maxv], [minv, maxv], lw=2) # línea y=x plt.xlabel(“Real (y_test)”) plt.ylabel(“Predicho (y_pred)”) plt.title(“Comparación valores reales vs predichos”) plt.grid(True) plt.show()"
+  },
+  {
+    "objectID": "regresion_pm25.html#curva-de-aprendizaje-opcional-recomendado",
+    "href": "regresion_pm25.html#curva-de-aprendizaje-opcional-recomendado",
+    "title": "Regresión — PM2.5 (Ecuador)",
+    "section": "6) Curva de aprendizaje (opcional recomendado)",
+    "text": "6) Curva de aprendizaje (opcional recomendado)\nfrom sklearn.model_selection import learning_curve import numpy as np\ntrain_sizes, train_scores, valid_scores = learning_curve( pipe, X, y, cv=5, scoring=“r2”, train_sizes=np.linspace(0.1, 1.0, 5), n_jobs=None, random_state=42 )\ntrain_mean = train_scores.mean(axis=1) valid_mean = valid_scores.mean(axis=1)\nplt.figure(figsize=(7,4)) plt.plot(train_sizes, train_mean, marker=“o”, label=“Train R²”) plt.plot(train_sizes, valid_mean, marker=“o”, label=“Valid R²”) plt.xlabel(“Tamaño del conjunto de entrenamiento”) plt.ylabel(“R²”) plt.title(“Curva de aprendizaje”) plt.legend() plt.grid(True) plt.show()\n##7) Conclusiones rápidas #Objetivo: predecir el valor continuo de PM2.5 usando solo variables numéricas.\n#Modelo: Pipeline(StandardScaler + LinearRegression).\n#Métricas: reporta MSE y R²; idealmente R² &gt; 0 para que el modelo supere a una media constante.\n#Si el R² es bajo o negativo:\n#Revisa variables: quizá faltan características relevantes (meteorología, ubicación, hora, etc.).\n#Considera limpiar outliers o agregar transformaciones.\n#Intenta otro modelo (p.ej., RandomForestRegressor) si la consigna lo permite."
   },
   {
     "objectID": "clasificacion_incidentes.html",
@@ -12,5 +54,12 @@
     "title": "Classification — Incidentes",
     "section": "",
     "text": "Problemática: detectar si un incidente será un “accidente con heridos” usando solo variables numéricas\n\n\nCode\n# 1. Importar librerías\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.metrics import (\n    accuracy_score, precision_score, recall_score, f1_score,\n    ConfusionMatrixDisplay, RocCurveDisplay\n)\n\n# 2. Cargar dataset\ndf = pd.read_csv(\"data/incidentes_clasificacion_ready.csv\")\n\ny = df[\"accidente_con_heridos\"]\nX = df.drop(columns=[\"accidente_con_heridos\"])\n\nprint(\"Dimensiones:\", X.shape)\nprint(\"Distribución de clases:\")\nprint(y.value_counts())\n\n# 3. Dividir en train/test\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42, stratify=y\n)\n\n# 4. Entrenar modelo SIN pipeline\nmodel = LogisticRegression(max_iter=100000, class_weight=\"balanced\")\nmodel.fit(X_train, y_train)\n\n# 5. Predicciones\ny_pred = model.predict(X_test)\ny_proba = model.predict_proba(X_test)[:,1]\n\n# 6. Métricas\naccuracy = accuracy_score(y_test, y_pred)\nprecision = precision_score(y_test, y_pred, zero_division=0)\nrecall = recall_score(y_test, y_pred, zero_division=0)\nf1 = f1_score(y_test, y_pred, zero_division=0)\n\nprint(\"\\n==== Resultados SIN Pipeline ====\")\nprint(f\"Accuracy : {accuracy:.4f}\")\nprint(f\"Precision: {precision:.4f}\")\nprint(f\"Recall   : {recall:.4f}\")\nprint(f\"F1 Score : {f1:.4f}\")\n\n# 7. Matriz de confusión\nConfusionMatrixDisplay.from_predictions(y_test, y_pred)\nplt.title(\"Matriz de Confusión — Sin Pipeline\")\nplt.show()\n\n# 8. Curva ROC\nRocCurveDisplay.from_predictions(y_test, y_proba)\nplt.title(\"Curva ROC — Sin Pipeline\")\nplt.grid(True, alpha=0.3)\nplt.show()\n\n# ======== CON PIPELINE ========\n\npipe = Pipeline([\n    (\"scaler\", StandardScaler()),\n    (\"logreg\", LogisticRegression(max_iter=100000, class_weight=\"balanced\"))\n])\n\npipe.fit(X_train, y_train)\ny_pred_pipe = pipe.predict(X_test)\ny_proba_pipe = pipe.predict_proba(X_test)[:,1]\n\naccuracy = accuracy_score(y_test, y_pred_pipe)\nprecision = precision_score(y_test, y_pred_pipe, zero_division=0)\nrecall = recall_score(y_test, y_pred_pipe, zero_division=0)\nf1 = f1_score(y_test, y_pred_pipe, zero_division=0)\n\nprint(\"\\n==== Resultados CON Pipeline ====\")\nprint(f\"Accuracy : {accuracy:.4f}\")\nprint(f\"Precision: {precision:.4f}\")\nprint(f\"Recall   : {recall:.4f}\")\nprint(f\"F1 Score : {f1:.4f}\")\n\nConfusionMatrixDisplay.from_predictions(y_test, y_pred_pipe)\nplt.title(\"Matriz de Confusión — Con Pipeline\")\nplt.show()\n\nRocCurveDisplay.from_predictions(y_test, y_proba_pipe)\nplt.title(\"Curva ROC — Con Pipeline\")\nplt.grid(True, alpha=0.3)\nplt.show()\n\n\nDimensiones: (268065, 4)\nDistribución de clases:\naccidente_con_heridos\n0    265740\n1      2325\nName: count, dtype: int64\n\n==== Resultados SIN Pipeline ====\nAccuracy : 0.5142\nPrecision: 0.0107\nRecall   : 0.6022\nF1 Score : 0.0210\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n==== Resultados CON Pipeline ====\nAccuracy : 0.5142\nPrecision: 0.0107\nRecall   : 0.6022\nF1 Score : 0.0210"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Proyecto Final — Machine Learning",
+    "section": "",
+    "text": "Bienvenido\nEste sitio contiene el desarrollo de dos tareas de aprendizaje supervisado:\n\nClasificación: incidentes (accidentes con heridos) con Regresión Logística.\nRegresión: (PM2.5) — lo agregaremos como segunda página.\n\n\nAutor: Noe Sanchez\nAño: 2025\nCurso: ML"
   }
 ]

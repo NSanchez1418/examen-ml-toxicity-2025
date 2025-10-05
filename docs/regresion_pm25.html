@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Proyecto Final — Machine Learning – Machine Learning — Proyecto</title>
+<title>Regresión — PM2.5 (Ecuador) – Machine Learning — Proyecto</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3850,7 +3850,7 @@ vertical-align: -.125em;
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -3858,7 +3858,7 @@ vertical-align: -.125em;
 <span class="menu-text">Clasificación</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./regresion_pm25.html"> 
+    <a class="nav-link active" href="./regresion_pm25.html" aria-current="page"> 
 <span class="menu-text">Regresión</span></a>
   </li>  
 </ul>
@@ -3877,7 +3877,20 @@ vertical-align: -.125em;
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bienvenido" id="toc-bienvenido" class="nav-link active" data-scroll-target="#bienvenido">Bienvenido</a></li>
+  <li><a href="#cargar-y-explorar" id="toc-cargar-y-explorar" class="nav-link active" data-scroll-target="#cargar-y-explorar">1) Cargar y explorar</a></li>
+  <li><a href="#ruta-al-dataset-limpio-que-generamos-antes" id="toc-ruta-al-dataset-limpio-que-generamos-antes" class="nav-link" data-scroll-target="#ruta-al-dataset-limpio-que-generamos-antes">Ruta al dataset limpio que generamos antes</a></li>
+  <li><a href="#nos-quedamos-solo-con-columnas-numéricas-la-consigna-pide-evitar-categóricas" id="toc-nos-quedamos-solo-con-columnas-numéricas-la-consigna-pide-evitar-categóricas" class="nav-link" data-scroll-target="#nos-quedamos-solo-con-columnas-numéricas-la-consigna-pide-evitar-categóricas">Nos quedamos SOLO con columnas numéricas (la consigna pide evitar categóricas)</a>
+  <ul class="collapse">
+  <li><a href="#seleccionar-variables-x-y-y-traintest-split" id="toc-seleccionar-variables-x-y-y-traintest-split" class="nav-link" data-scroll-target="#seleccionar-variables-x-y-y-traintest-split">2) Seleccionar variables (X, y) y train/test split</a></li>
+  </ul></li>
+  <li><a href="#elegir-la-y" id="toc-elegir-la-y" class="nav-link" data-scroll-target="#elegir-la-y">Elegir la y:</a></li>
+  <li><a href="#intentamos-pm25-si-no-existe-tomamos-la-última-numérica-como-objetivo-fallback" id="toc-intentamos-pm25-si-no-existe-tomamos-la-última-numérica-como-objetivo-fallback" class="nav-link" data-scroll-target="#intentamos-pm25-si-no-existe-tomamos-la-última-numérica-como-objetivo-fallback">Intentamos ‘pm25’, si no existe tomamos la última numérica como objetivo (fallback)</a>
+  <ul class="collapse">
+  <li><a href="#pipeline-linearregression" id="toc-pipeline-linearregression" class="nav-link" data-scroll-target="#pipeline-linearregression">3) Pipeline + LinearRegression</a></li>
+  <li><a href="#métricas-mse-y-r²" id="toc-métricas-mse-y-r²" class="nav-link" data-scroll-target="#métricas-mse-y-r²">4) Métricas (MSE y R²)</a></li>
+  <li><a href="#visualización-real-vs-predicho" id="toc-visualización-real-vs-predicho" class="nav-link" data-scroll-target="#visualización-real-vs-predicho">5) Visualización — Real vs Predicho</a></li>
+  <li><a href="#curva-de-aprendizaje-opcional-recomendado" id="toc-curva-de-aprendizaje-opcional-recomendado" class="nav-link" data-scroll-target="#curva-de-aprendizaje-opcional-recomendado">6) Curva de aprendizaje (opcional recomendado)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -3886,7 +3899,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Proyecto Final — Machine Learning</h1>
+<h1 class="title">Regresión — PM2.5 (Ecuador)</h1>
 </div>
 
 
@@ -3903,19 +3916,65 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="bienvenido" class="level1">
-<h1>Bienvenido</h1>
-<p>Este sitio contiene el desarrollo de dos tareas de <strong>aprendizaje supervisado</strong>:</p>
-<ul>
-<li><strong>Clasificación:</strong> incidentes (accidentes con heridos) con Regresión Logística.</li>
-<li><strong>Regresión:</strong> (PM2.5) — lo agregaremos como segunda página.</li>
-</ul>
-<hr>
-<p><strong>Autor:</strong> Noe Sanchez<br>
-<strong>Año:</strong> 2025<br>
-<strong>Curso:</strong> ML</p>
+<section id="cargar-y-explorar" class="level2">
+<h2 class="anchored" data-anchor-id="cargar-y-explorar">1) Cargar y explorar</h2>
+<p>import pandas as pd import numpy as np</p>
+</section>
+<section id="ruta-al-dataset-limpio-que-generamos-antes" class="level1">
+<h1>Ruta al dataset limpio que generamos antes</h1>
+<p>df = pd.read_csv(“data/pm25_ecuador_clean.csv”)</p>
+<p>print(“Shape:”, df.shape) display(df.head(8))</p>
+</section>
+<section id="nos-quedamos-solo-con-columnas-numéricas-la-consigna-pide-evitar-categóricas" class="level1">
+<h1>Nos quedamos SOLO con columnas numéricas (la consigna pide evitar categóricas)</h1>
+<p>num = df.select_dtypes(include=[np.number]).copy() print(“Numéricas:”, list(num.columns)) display(num.describe().T)</p>
+<section id="seleccionar-variables-x-y-y-traintest-split" class="level2">
+<h2 class="anchored" data-anchor-id="seleccionar-variables-x-y-y-traintest-split">2) Seleccionar variables (X, y) y train/test split</h2>
+<p>from sklearn.model_selection import train_test_split</p>
+</section>
+</section>
+<section id="elegir-la-y" class="level1">
+<h1>Elegir la y:</h1>
+</section>
+<section id="intentamos-pm25-si-no-existe-tomamos-la-última-numérica-como-objetivo-fallback" class="level1">
+<h1>Intentamos ‘pm25’, si no existe tomamos la última numérica como objetivo (fallback)</h1>
+<p>target_name = “pm25” if “pm25” in num.columns else num.columns[-1] y = num[target_name].values X = num.drop(columns=[target_name]).values</p>
+<p>print(“Objetivo (y):”, target_name) print(“X shape:”, X.shape, “| y shape:”, y.shape)</p>
+<p>X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.25, random_state=42 )</p>
+<section id="pipeline-linearregression" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-linearregression">3) Pipeline + LinearRegression</h2>
+<p>from sklearn.pipeline import Pipeline from sklearn.preprocessing import StandardScaler from sklearn.linear_model import LinearRegression</p>
+<p>pipe = Pipeline([ (“scaler”, StandardScaler()), # en lineal no siempre es necesario, pero es buena práctica (“linreg”, LinearRegression())])</p>
+<p>pipe.fit(X_train, y_train)</p>
+<p>y_pred = pipe.predict(X_test)</p>
+</section>
+<section id="métricas-mse-y-r²" class="level2">
+<h2 class="anchored" data-anchor-id="métricas-mse-y-r²">4) Métricas (MSE y R²)</h2>
+<p>from sklearn.metrics import mean_squared_error, r2_score</p>
+<p>mse = mean_squared_error(y_test, y_pred) r2 = r2_score(y_test, y_pred)</p>
+<p>print(f”MSE: {mse:,.3f}“) print(f”R² : {r2:,.4f}“)</p>
+</section>
+<section id="visualización-real-vs-predicho" class="level2">
+<h2 class="anchored" data-anchor-id="visualización-real-vs-predicho">5) Visualización — Real vs Predicho</h2>
+<p>import matplotlib.pyplot as plt</p>
+<p>plt.figure(figsize=(6,6)) plt.scatter(y_test, y_pred, s=10, alpha=0.5) minv = min(y_test.min(), y_pred.min()) maxv = max(y_test.max(), y_pred.max()) plt.plot([minv, maxv], [minv, maxv], lw=2) # línea y=x plt.xlabel(“Real (y_test)”) plt.ylabel(“Predicho (y_pred)”) plt.title(“Comparación valores reales vs predichos”) plt.grid(True) plt.show()</p>
+</section>
+<section id="curva-de-aprendizaje-opcional-recomendado" class="level2">
+<h2 class="anchored" data-anchor-id="curva-de-aprendizaje-opcional-recomendado">6) Curva de aprendizaje (opcional recomendado)</h2>
+<p>from sklearn.model_selection import learning_curve import numpy as np</p>
+<p>train_sizes, train_scores, valid_scores = learning_curve( pipe, X, y, cv=5, scoring=“r2”, train_sizes=np.linspace(0.1, 1.0, 5), n_jobs=None, random_state=42 )</p>
+<p>train_mean = train_scores.mean(axis=1) valid_mean = valid_scores.mean(axis=1)</p>
+<p>plt.figure(figsize=(7,4)) plt.plot(train_sizes, train_mean, marker=“o”, label=“Train R²”) plt.plot(train_sizes, valid_mean, marker=“o”, label=“Valid R²”) plt.xlabel(“Tamaño del conjunto de entrenamiento”) plt.ylabel(“R²”) plt.title(“Curva de aprendizaje”) plt.legend() plt.grid(True) plt.show()</p>
+<p>##7) Conclusiones rápidas #Objetivo: predecir el valor continuo de PM2.5 usando solo variables numéricas.</p>
+<p>#Modelo: Pipeline(StandardScaler + LinearRegression).</p>
+<p>#Métricas: reporta MSE y R²; idealmente R² &gt; 0 para que el modelo supere a una media constante.</p>
+<p>#Si el R² es bajo o negativo:</p>
+<p>#Revisa variables: quizá faltan características relevantes (meteorología, ubicación, hora, etc.).</p>
+<p>#Considera limpiar outliers o agregar transformaciones.</p>
+<p>#Intenta otro modelo (p.ej., RandomForestRegressor) si la consigna lo permite.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

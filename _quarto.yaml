@@ -10,9 +10,8 @@ website:
         text: Home
       - href: clasificacion_incidentes.qmd
         text: Clasificación
-      # si aún no tienes la página de regresión, deja comentada la línea de abajo:
-      # - href: regresion_pm25.qmd
-      #   text: Regresión
+      - href: regresion_pm25.qmd
+        text: Regresión
 
 format:
   html:
