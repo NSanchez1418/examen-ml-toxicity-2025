@@ -99,3 +99,14 @@ plt.title("Curva ROC — Con Pipeline")
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
+## ## Conclusiones e interpretación
+
+**Resumen del problema.**  
+Se modeló la probabilidad de **accidente con heridos** (clase 1) usando **Regresión Logística**, con un flujo estándar: carga del dataset, división `train_test_split` con `stratify`, entrenamiento **sin** y **con** `Pipeline(StandardScaler + LogisticRegression)`, evaluación con **Accuracy, Precision, Recall, F1** y visualizaciones (**Matriz de confusión** y **Curva ROC**).
+
+**Resultados clave (lo observado en este experimento):**
+- El **accuracy** es poco informativo dado el **fuerte desbalance** (la clase positiva es muy rara).  
+- Se obtuvo **Recall** relativamente alto (capacidad de encontrar positivos) a costa de **Precision** baja (muchos falsos positivos).  
+- **Con** y **sin** Pipeline las métricas son muy similares —esperable en un modelo lineal cuando las variables ya están en rangos similares y el desbalance domina el comportamiento.
+
+

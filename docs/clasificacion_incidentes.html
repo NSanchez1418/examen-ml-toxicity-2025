@@ -3912,7 +3912,10 @@ vertical-align: -.125em;
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas" id="toc-problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas" class="nav-link active" data-scroll-target="#problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas">Problemática: detectar si un incidente será un “accidente con heridos” usando solo variables numéricas</a></li>
+  <li><a href="#problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas" id="toc-problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas" class="nav-link active" data-scroll-target="#problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas">Problemática: detectar si un incidente será un “accidente con heridos” usando solo variables numéricas</a>
+  <ul class="collapse">
+  <li><a href="#conclusiones-e-interpretación" id="toc-conclusiones-e-interpretación" class="nav-link" data-scroll-target="#conclusiones-e-interpretación">## Conclusiones e interpretación</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -3940,7 +3943,7 @@ vertical-align: -.125em;
 
 <section id="problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas" class="level1">
 <h1>Problemática: detectar si un incidente será un “accidente con heridos” usando solo variables numéricas</h1>
-<div id="8323aa04" class="cell" data-execution_count="1">
+<div id="6565c2e2" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Importar librerías</span></span>
@@ -4083,8 +4086,16 @@ F1 Score : 0.0210</code></pre>
 </div>
 </div>
 </div>
+<section id="conclusiones-e-interpretación" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones-e-interpretación">## Conclusiones e interpretación</h2>
+<p><strong>Resumen del problema.</strong><br>
+Se modeló la probabilidad de <strong>accidente con heridos</strong> (clase 1) usando <strong>Regresión Logística</strong>, con un flujo estándar: carga del dataset, división <code>train_test_split</code> con <code>stratify</code>, entrenamiento <strong>sin</strong> y <strong>con</strong> <code>Pipeline(StandardScaler + LogisticRegression)</code>, evaluación con <strong>Accuracy, Precision, Recall, F1</strong> y visualizaciones (<strong>Matriz de confusión</strong> y <strong>Curva ROC</strong>).</p>
+<p><strong>Resultados clave (lo observado en este experimento):</strong> - El <strong>accuracy</strong> es poco informativo dado el <strong>fuerte desbalance</strong> (la clase positiva es muy rara).<br>
+- Se obtuvo <strong>Recall</strong> relativamente alto (capacidad de encontrar positivos) a costa de <strong>Precision</strong> baja (muchos falsos positivos).<br>
+- <strong>Con</strong> y <strong>sin</strong> Pipeline las métricas son muy similares —esperable en un modelo lineal cuando las variables ya están en rangos similares y el desbalance domina el comportamiento.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

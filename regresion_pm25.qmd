@@ -12,6 +12,7 @@ execute:
   warning: false
   error: true   # ponlo true mientras probamos; luego puedes volver a false
 ---
+## Análisis de calidad del aire (PM2.5) en Ecuador con foco en Quito. 
 
 ## 1) Cargar y explorar
 
@@ -23,13 +24,13 @@ import numpy as np
 df = pd.read_csv("data/pm25_ecuador_clean.csv")
 
 print("Shape:", df.shape)
-display(df.head(8))Get-Item .\docs\regresion_pm25.html
-
+display(df.head(8))
 
 # Nos quedamos SOLO con columnas numéricas (la consigna pide evitar categóricas)
 num = df.select_dtypes(include=[np.number]).copy()
 print("Numéricas:", list(num.columns))
 display(num.describe().T)
+
 
 ## 2) Seleccionar variables (X, y) y train/test split
 from sklearn.model_selection import train_test_split
@@ -113,17 +114,55 @@ plt.show()
 
 ```
 
-##7) Conclusiones rápidas
-#Objetivo: predecir el valor continuo de PM2.5 usando solo variables numéricas.
+## Conclusiones — Regresión (PM2.5 Quito)
 
-#Modelo: Pipeline(StandardScaler + LinearRegression).
+```{python}
+# --- Asegurar que el objetivo (y) sea la medida de PM2.5 ---
+# Ajusta aquí al nombre REAL de tu columna objetivo en data/pm25_ecuador_clean.csv
+# Ejemplos comunes: "pm25_mean_anual", "pm25_max_anual"
+# Si no existe, hace fallback a "pm25" si está; y si tampoco, a la última numérica.
 
-#Métricas: reporta MSE y R²; idealmente R² > 0 para que el modelo supere a una media constante.
+import pandas as pd, numpy as np
 
-#Si el R² es bajo o negativo:
+df = pd.read_csv("data/pm25_ecuador_clean.csv")
+num = df.select_dtypes(include=[np.number]).copy()
 
-#Revisa variables: quizá faltan características relevantes (meteorología, ubicación, hora, etc.).
+# --- Elige tu objetivo aquí ---
+target_candidates = ["pm25_mean_anual", "pm25_max_anual", "pm25"]
+target_name = None
+for c in target_candidates:
+    if c in num.columns:
+        target_name = c
+        break
+if target_name is None:
+    target_name = num.columns[-1]  # fallback
 
-#Considera limpiar outliers o agregar transformaciones.
+X = num.drop(columns=[target_name]).values
+y = num[target_name].values
 
-#Intenta otro modelo (p.ej., RandomForestRegressor) si la consigna lo permite.
+print(f"Objetivo (y): {target_name}")
+print("X shape:", X.shape, "| y shape:", y.shape)
+```
+
+## Resumen del flujo aplicado.
+
+Split: train_test_split(..., test_size=0.25, random_state=42)
+
+Modelo (Pipeline): StandardScaler() + LinearRegression()
+
+Métricas: MSE y R² (proporción de varianza explicada).
+
+Gráfico: Real vs Predicho con línea identidad.
+
+Resultados de esta corrida (ejemplo):
+
+MSE bajo y R² alto indican buen ajuste en el agregado anual por estación.
+Si no obtienes métricas satisfactorias, revisa el objetivo y las columnas numéricas disponibles.
+
+Interpretación.
+
+En datos anuales por estación, la relación puede ser casi lineal, por eso LinearRegression funciona bien.
+
+Para análisis más finos (intraanuales), agrega variables meteorológicas y de tráfico; prueba modelos no lineales (RandomForest/GBM).
+
+
