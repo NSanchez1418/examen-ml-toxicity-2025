@@ -7,6 +7,7 @@ format:
     code-fold: true
     fig-align: center
 ---
+# Problemática: detectar si un incidente será un “accidente con heridos” usando solo variables numéricas
 
 ```{python}
 # 1. Importar librerías
