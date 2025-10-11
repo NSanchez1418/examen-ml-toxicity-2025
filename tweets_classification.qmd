@@ -1,0 +1,370 @@
+---
+title: "Tweets Classification"
+code-fold: false
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: true
+  cache: false
+  freeze: false
+format:
+  html:
+    fig-format: png
+    df-print: paged
+---
+
+```{python}
+#| echo: true
+import sys, matplotlib
+print("Python:", sys.version.split()[0])
+print("Matplotlib backend:", matplotlib.get_backend())
+
+import matplotlib.pyplot as plt
+plt.plot([0,1,2],[0,1,0])
+plt.title("Gráfico de prueba")
+plt.tight_layout()
+plt.show()
+
+```
+
+## ## Objetivo
+Clasificar cuentas en **real vs. bot** a partir de tweets (texto + metadatos), creando un target heurístico y armando un pipeline con TF-IDF + OneHotEncoder + StandardScaler + LogisticRegression.
+
+## Dataset
+Fuente: CSV público (Twitter) – 158,873 filas; 26 columnas.
+
+## Selección del target (user_type)
+Se definió **user_type ∈ {bot, real}** mediante una **heurística débil** basada en señales (foto de perfil, seguidores, edad de cuenta, etc.). Esta etiqueta sirve para entrenar un modelo que **generalice** el patrón.
+
+## Columnas eliminadas
+Se eliminaron IDs, URLs, timestamps crudos y campos redundantes (p. ej., `tweetId`, `tweetUrl`, `authorProfilePic`, `createdAt`, `mentions`, `hashtag
+s`, `source`, etc.) por no aportar valor predictivo directo.
+
+## Pipeline
+- **Texto**: `TfidfVectorizer(stop_words=spanish, ngram_range=(1,2), min_df=5, max_df=0.90, max_features=50000)`
+- **Categóricas**: `OneHotEncoder(drop='if_binary')` en `isReply`, `authorVerified`
+- **Numéricas**: `StandardScaler(with_mean=False)` en `authorFollowers`, `mentions_count`, `hashtags_count`, `time_response`, `content_length`
+- **Modelo**: `LogisticRegression(max_iter=10000, class_weight={'bot': 2.5, 'real': 1.0})`
+
+# Importar librerías básicas
+
+```{python}
+import pandas as pd
+```
+
+# Librerías de preprocesamiento y modelo
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, LabelEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
+```
+
+# Librerías de texto
+
+```{python}
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+```
+
+# Evaluación
+
+```{python}
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+```
+
+# Otras utilidades
+
+```{python}
+from IPython.display import display
+import nltk
+nltk.download('stopwords')
+```
+
+# Cargar dataset desde GitHub
+
+```{python}
+url = "https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/tweets_totales_con_sentimiento_ml.csv"
+
+df = pd.read_csv(url)
+```
+
+
+# Verificar las primeras filas y la estructura general
+
+```{python}
+display(df.head(10))
+
+```
+
+# Información general del dataset
+
+```{python}
+df.info()     # Quarto debe capturarlo; si no ves nada, usa la versión con buffer:
+# import io
+# buf = io.StringIO()
+# df.info(buf=buf)
+# print(buf.getvalue())
+
+```
+
+# Cantidad de filas y columnas
+
+```{python}
+print("Shape:", df.shape)
+
+```
+
+# Verificar nombres de columnas
+
+```{python}
+list(df.columns)
+
+```
+
+## Exploración del target potencial
+
+```{python}
+# Revisar la variación de sentiment_polarity
+print(df['sentiment_polarity'].describe())
+
+print("\nValores únicos de sentiment_polarity y su frecuencia:")
+print(df['sentiment_polarity'].value_counts().head(10))
+
+```
+
+## Borrar columnas irrelevantes
+
+```{python}
+# === Eliminación explícita de columnas irrelevantes ===
+irrelevantes = [
+    'tweetId', 'tweetUrl',                 # IDs/URLs
+    'authorId', 'authorName', 'authorUsername', 'authorProfilePic',
+    'replyTo', 'conversationId', 'inReplyToId',                      # IDs de conversación
+    'createdAt', 'Date', 'authorJoinDate',                           # timestamps en texto
+    'mentions', 'hashtags',                                          # ya tenemos *_count
+    'source'                                                         # casi constante
+    # 'content_length'  # <- si NO quieres usarla, descomenta y se elimina
+]
+
+# Columnas relevantes que conservaremos
+relevantes = [
+    'content', 'isReply', 'authorVerified', 'has_profile_picture',
+    'authorFollowers', 'account_age_days', 'mentions_count',
+    'hashtags_count', 'time_response', 'content_length',
+    'sentiment_polarity'
+]
+
+cols_existentes = [c for c in irrelevantes if c in df.columns]
+df_clean = df.drop(columns=cols_existentes).copy()
+df_clean = df_clean[relevantes].copy()
+
+print("Eliminadas:", len(cols_existentes), "→", cols_existentes)
+print("Shape original:", df.shape, "→ Shape limpio:", df_clean.shape)
+display(df_clean.head(3))
+
+```
+
+## Crear target "user_type"
+
+```{python}
+# Heurística para etiquetar "bot" vs "real"
+def label_user_type(row):
+    score = 0
+    # señales fuertes
+    if not row['has_profile_picture']:
+        score += 2
+    if row['authorFollowers'] < 50:
+        score += 2
+    if row['account_age_days'] < 60:
+        score += 2
+    # señales adicionales
+    if row['mentions_count'] >= 3:
+        score += 1
+    if row['hashtags_count'] >= 3:
+        score += 1
+    if row['content_length'] < 20:
+        score += 1
+    if row['isReply']:
+        score += 1
+    # verificado resta (suele ser humano/organización)
+    if row['authorVerified']:
+        score -= 2
+
+    return "bot" if score >= 4 else "real"
+
+df_bot = df_clean.copy()
+df_bot['user_type'] = df_bot.apply(label_user_type, axis=1)
+
+print("Distribución user_type:")
+print(df_bot['user_type'].value_counts())
+print("\nProporciones:")
+print(df_bot['user_type'].value_counts(normalize=True).round(3))
+
+# --- Gráfico: Distribución de clases (user_type) ---
+import matplotlib.pyplot as plt
+
+ax = df_bot['user_type'].value_counts().plot(kind='bar')
+plt.title('Distribución de clases (user_type)')
+plt.xlabel('Clase')
+plt.ylabel('Frecuencia')
+plt.tight_layout()
+plt.show()
+
+# (opcional) guardar la figura para tu informe/presentación
+fig = plt.gcf()
+fig.savefig("docs/fig_user_type_dist.png", dpi=150, bbox_inches='tight')
+
+```
+
+## Seleccion de columnas para entrenar
+
+```{python}
+# Definición de columnas
+text_col = 'content'
+target_col = 'user_type'
+
+cat_cols = ['isReply', 'authorVerified']
+num_cols = ['authorFollowers', 'mentions_count', 'hashtags_count', 'time_response', 'content_length']
+
+keep_cols = [text_col, target_col] + cat_cols + num_cols
+df_train = df_bot[keep_cols].copy()
+
+# Limpieza mínima
+df_train[text_col] = df_train[text_col].fillna("").astype(str).str.strip()
+df_train = df_train[df_train[text_col] != ""]
+
+print("Shape final para entrenamiento:", df_train.shape)
+display(df_train.head(3))
+
+```
+
+## Train/ Test Split estratificado
+
+```{python}
+from sklearn.model_selection import train_test_split
+
+X = df_train.drop(columns=[target_col])
+y = df_train[target_col]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+print("Train:", X_train.shape, " Test:", X_test.shape)
+print("Distrib y_train:\n", y_train.value_counts(normalize=True).round(3))
+
+```
+
+## ColumnTransformer (TF-IDF + OHE + escala numérica)
+
+```{python}
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.corpus import stopwords as nltk_stopwords   # ⬅️ NUEVO
+
+spanish_stop = nltk_stopwords.words('spanish')        # ⬅️ NUEVO
+
+text_vectorizer = TfidfVectorizer(
+    stop_words=spanish_stop,      # ⬅️ en lugar de 'spanish'
+    min_df=5,
+    max_df=0.90,
+    ngram_range=(1, 2),
+    max_features=50000
+)
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('text', text_vectorizer, text_col),
+        ('cat', OneHotEncoder(handle_unknown='ignore', drop='if_binary'), cat_cols),
+        ('num', StandardScaler(with_mean=False), num_cols)
+    ],
+    remainder='drop',
+    sparse_threshold=0.3
+)
+
+
+```
+
+## Pipelines (LR con texto+meta, y NB solo texto)
+
+```{python}
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import MultinomialNB
+
+# Regresión Logística (texto + categóricas + numéricas)
+pipe_lr = Pipeline([
+    ('prep', preprocessor),
+    ('clf', LogisticRegression(
+        max_iter=10000,
+        class_weight={'bot': 2.5, 'real': 1.0},
+        random_state=42
+    ))
+])
+
+
+# Naive Bayes SOLO TEXTO (baseline)
+pipe_nb_text_only = Pipeline([
+    ('tfidf', text_vectorizer),
+    ('nb', MultinomialNB())
+])
+
+```
+## Entrenar y Evaluar
+
+```{python}
+import matplotlib.pyplot as plt
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay
+
+# 1) Logistic Regression con todas las features
+pipe_lr.fit(X_train, y_train)
+y_pred_lr = pipe_lr.predict(X_test)
+print("=== Logistic Regression (texto + meta) ===")
+print(classification_report(y_test, y_pred_lr, digits=3))
+ConfusionMatrixDisplay.from_predictions(y_test, y_pred_lr)
+plt.show()
+
+# 2) Naive Bayes solo texto
+pipe_nb_text_only.fit(X_train[text_col], y_train)
+y_pred_nb = pipe_nb_text_only.predict(X_test[text_col])
+print("\n=== MultinomialNB (solo texto) ===")
+print(classification_report(y_test, y_pred_nb, digits=3))
+ConfusionMatrixDisplay.from_predictions(y_test, y_pred_nb)
+plt.show()
+
+```
+
+
+# Resultados y Análisis
+
+El dataset de Twitter contiene **158 873 registros** con texto y metadatos de usuarios.  
+Se definió un target heurístico `user_type` (real vs bot) basado en reglas simples de comportamiento y atributos del perfil.
+
+### Distribución de clases
+El conjunto de datos quedó con una proporción aproximada de **80 % usuarios reales** y **20 % bots**, lo que permite entrenar sin balance extremo.
+
+### Modelos evaluados
+Se compararon dos enfoques:
+- **Multinomial Naive Bayes** (solo texto, TF-IDF)
+- **Regresión Logística** (texto + variables categóricas y numéricas)
+
+### Desempeño general
+El modelo **Logistic Regression (texto + meta)** logró un mejor balance entre precisión y recall, alcanzando un `accuracy ≈ 0.82` y mejor detección de la clase *bot* (`recall ≈ 0.54` frente a `0.21` en NB).  
+El uso de **bigramas** y **stopwords en español** mejoró la señal textual, y el ajuste de pesos (`class_weight`) aumentó la sensibilidad hacia *bot*.
+
+### Conclusiones
+- Las variables de perfil (`followers`, `account_age_days`, `verified`) complementan al texto para identificar bots.
+- La etiqueta heurística es útil para experimentación, aunque no reemplaza una anotación humana.
+- Logistic Regression es más estable que Naive Bayes en contextos con metadatos.
+- Se podrían probar mejoras con técnicas de balanceo (SMOTE, undersampling) o modelos no lineales (árboles, boosting).
+
+### Trabajo futuro
+- Refinar la heurística del target con detección semiautomática.
+- Evaluar interpretabilidad con `coef_` de LR (palabras más predictivas).
+- Publicar resultados interactivos en el dashboard Quarto.
