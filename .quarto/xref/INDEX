@@ -7,5 +7,23 @@
   },
   "regresion_pm25.qmd": {
     "regresion_pm25.html": "b4d7ce0d"
+  },
+  "ml_text.qmd": {
+    "ml_text.html": "667ae23c"
+  },
+  "bagofwords.qmd": {
+    "bagofwords.html": "4926aa1d"
+  },
+  "nn.qmd": {
+    "nn.html": "2951acf1"
+  },
+  "tfidf.qmd": {
+    "tfidf.html": "75d14101"
+  },
+  "tweets_classification.qmd": {
+    "tweets_classification.html": "20fb684f"
+  },
+  "text_classification.qmd": {
+    "text_classification.html": "39951ce0"
   }
 }

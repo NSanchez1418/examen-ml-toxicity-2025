@@ -1,0 +1,102 @@
+---
+title: "NLP Key Concepts"
+code-fold: false
+---
+
+# Cargar librerías
+```{python}
+import pandas as pd
+import requests
+
+# Natural Language Toolkit
+import nltk
+# downloading some additional packages and corpora
+nltk.download('punkt_tab') # necessary for tokenization
+nltk.download('wordnet') # necessary for lemmatization
+nltk.download('stopwords') # necessary for removal of stop words
+nltk.download('averaged_perceptron_tagger_eng') # necessary for POS tagging
+nltk.download('maxent_ne_chunker' ) # necessary for entity extraction
+nltk.download('omw-1.4') # necessary for lemmatization
+nltk.download('words')
+
+```
+
+# Cargar data
+
+
+```{python}
+url = "https://raw.githubusercontent.com/erickedu85/dataset/master/story.txt"
+r = requests.get(url)
+r.encoding = 'utf-8'
+
+story = r.text
+story
+
+```
+
+# Tokenización
+
+
+```{python}
+from nltk import word_tokenize
+
+words = word_tokenize(story)
+words[:20]
+```
+
+# Stemming and Lemmatization
+
+
+```{python}
+from nltk.stem import PorterStemmer as stemmer
+from nltk.stem import WordNetLemmatizer as lemmatizer
+from nltk.corpus import wordnet
+
+palabra = "changing"
+print("PALABRA: ", palabra)
+
+#stemming
+print("STEMMING: ",stemmer().stem(palabra))
+
+#lemmatizatio
+print("LEMMATIZATION: ", lemmatizer().lemmatize(palabra,pos=wordnet.VERB))
+
+```
+
+# PART OF SPEECH - POS TAG
+```{python}
+from nltk import pos_tag
+pos = pos_tag(words)
+pos[:20]
+```
+
+# STOP WORDS
+
+
+```{python}
+from nltk.corpus import stopwords as stop
+
+stopwords = stop.words("english")
+stopwords[:20]
+
+# for item in stop.words("spanish"):
+#     print(item)
+
+```
+
+# STOP WORDS IN STORY
+
+```{python}
+
+tokens = nltk.word_tokenize(story.lower())
+# tokens[:20]
+
+# Limpieza depende del contexto de su problemática
+
+# limpieza de numeros
+lettertokens = [word for word in tokens if word.isalpha()]
+
+without_stopwords = [word for word in lettertokens if word not in stopwords]
+
+without_stopwords[:20]
+```

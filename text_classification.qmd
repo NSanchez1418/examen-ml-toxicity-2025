@@ -1,0 +1,108 @@
+---
+title: "Text classification"
+code-fold: false
+---
+
+# Importar librerías
+
+```{python}
+import pandas as pd
+from sklearn.datasets import fetch_20newsgroups
+
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+
+# vectorizacion textual
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+
+```
+
+# Cargar el dataset
+
+```{python}
+
+categorias = ['comp.graphics','comp.sys.mac.hardware','rec.sport.baseball','talk.politics.misc']
+
+newsgroups = fetch_20newsgroups(subset='train', remove=('headers','footers','quotes'))
+print(newsgroups.target_names)
+```
+
+# Features y target
+
+```{python}
+X_text = newsgroups.data #features
+y = newsgroups.target #target
+```
+
+
+# Train-test split
+
+```{python}
+X_train, X_test, y_train, y_test = train_test_split(
+    X_text,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+```
+
+# Vectorizacion de text
+
+```{python}
+stopwords = stopwords.words('english')
+# vectorizer = CountVectorizer(stop_words=stopwords) 
+vectorizer = TfidfVectorizer(stop_words=stopwords)
+```
+
+# Modelo
+
+```{python}
+model = MultinomialNB()
+```
+
+# Definición del Pipeline
+
+```{python}
+pipeline = Pipeline(
+    [
+        ('vectorizacion',vectorizer),
+        ('classfier',model)
+    ]
+)
+```
+
+# Fit del modelo
+
+```{python}
+pipeline.fit(X_train,y_train)
+```
+
+# Predicción
+
+```{python}
+y_pred = pipeline.predict(X_test)
+```
+
+# Reporte de clasificación
+
+```{python}
+print("REPORTE DE CLASIFICACION\n",classification_report(y_test,y_pred,target_names=newsgroups.target_names))
+```
+
+# Matriz de confusión
+
+```{python}
+ConfusionMatrixDisplay(
+    confusion_matrix(y_test,y_pred),display_labels=newsgroups.target_names
+).plot(
+    xticks_rotation='vertical'
+)
+```

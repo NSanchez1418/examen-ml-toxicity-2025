@@ -3904,10 +3904,21 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./clasificacion_incidentes.html"> 
-<span class="menu-text">Clasificación</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-clasificación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Clasificación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-clasificación">    
+        <li>
+    <a class="dropdown-item" href="./clasificacion_incidentes.html">
+ <span class="dropdown-text">Incidentes (clásico)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./tweets_classification.html">
+ <span class="dropdown-text">Tweets Classification</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./regresion_pm25.html"> 
 <span class="menu-text">Regresión</span></a>
@@ -3986,7 +3997,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </header>
 
 
-<div id="34138f85" class="cell" data-execution_count="1">
+<div id="e3d44ab5" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys, matplotlib</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Python:&quot;</span>, sys.version.split()[<span class="dv">0</span>])</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Matplotlib backend:&quot;</span>, matplotlib.get_backend())</span>
@@ -4035,13 +4046,13 @@ Matplotlib backend: module://matplotlib_inline.backend_inline</code></pre>
 </section>
 <section id="importar-librerías-básicas" class="level1">
 <h1>Importar librerías básicas</h1>
-<div id="29059ed1" class="cell" data-execution_count="2">
+<div id="828e1cf0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="librerías-de-preprocesamiento-y-modelo" class="level1">
 <h1>Librerías de preprocesamiento y modelo</h1>
-<div id="a7be45ab" class="cell" data-execution_count="3">
+<div id="63ebe723" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, OrdinalEncoder, StandardScaler, LabelEncoder</span>
@@ -4053,19 +4064,19 @@ Matplotlib backend: module://matplotlib_inline.backend_inline</code></pre>
 </section>
 <section id="librerías-de-texto" class="level1">
 <h1>Librerías de texto</h1>
-<div id="90ebad84" class="cell" data-execution_count="4">
+<div id="98a9b427" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer, CountVectorizer</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="evaluación" class="level1">
 <h1>Evaluación</h1>
-<div id="86c7b738" class="cell" data-execution_count="5">
+<div id="6994edcd" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix, ConfusionMatrixDisplay</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="otras-utilidades" class="level1">
 <h1>Otras utilidades</h1>
-<div id="4d090103" class="cell" data-execution_count="6">
+<div id="1863f520" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">&#39;stopwords&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4076,7 +4087,7 @@ Matplotlib backend: module://matplotlib_inline.backend_inline</code></pre>
 </section>
 <section id="cargar-dataset-desde-github" class="level1">
 <h1>Cargar dataset desde GitHub</h1>
-<div id="ea079991" class="cell" data-execution_count="7">
+<div id="8d9c0d25" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/tweets_totales_con_sentimiento_ml.csv&quot;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4084,7 +4095,7 @@ Matplotlib backend: module://matplotlib_inline.backend_inline</code></pre>
 </section>
 <section id="verificar-las-primeras-filas-y-la-estructura-general" class="level1">
 <h1>Verificar las primeras filas y la estructura general</h1>
-<div id="5c971518" class="cell" data-execution_count="8">
+<div id="7c8dec0a" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>display(df.head(<span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -4368,7 +4379,7 @@ Matplotlib backend: module://matplotlib_inline.backend_inline</code></pre>
 </section>
 <section id="información-general-del-dataset" class="level1">
 <h1>Información general del dataset</h1>
-<div id="8655e929" class="cell" data-execution_count="9">
+<div id="a0b7cc15" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df.info()     <span class="co"># Quarto debe capturarlo; si no ves nada, usa la versión con buffer:</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import io</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># buf = io.StringIO()</span></span>
@@ -4413,7 +4424,7 @@ memory usage: 28.3+ MB</code></pre>
 </section>
 <section id="cantidad-de-filas-y-columnas" class="level1">
 <h1>Cantidad de filas y columnas</h1>
-<div id="f20a87f0" class="cell" data-execution_count="10">
+<div id="990617be" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Shape:&quot;</span>, df.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shape: (158873, 26)</code></pre>
@@ -4422,7 +4433,7 @@ memory usage: 28.3+ MB</code></pre>
 </section>
 <section id="verificar-nombres-de-columnas" class="level1">
 <h1>Verificar nombres de columnas</h1>
-<div id="b1099e9a" class="cell" data-execution_count="11">
+<div id="f731d5f3" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">list</span>(df.columns)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>[&#39;tweetId&#39;,
@@ -4455,7 +4466,7 @@ memory usage: 28.3+ MB</code></pre>
 </div>
 <section id="exploración-del-target-potencial" class="level2">
 <h2 class="anchored" data-anchor-id="exploración-del-target-potencial">Exploración del target potencial</h2>
-<div id="7c4080c1" class="cell" data-execution_count="12">
+<div id="0df2f56c" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Revisar la variación de sentiment_polarity</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;sentiment_polarity&#39;</span>].describe())</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4490,7 +4501,7 @@ Name: count, dtype: int64</code></pre>
 </section>
 <section id="borrar-columnas-irrelevantes" class="level2">
 <h2 class="anchored" data-anchor-id="borrar-columnas-irrelevantes">Borrar columnas irrelevantes</h2>
-<div id="a2455f29" class="cell" data-execution_count="13">
+<div id="7d6f602a" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Eliminación explícita de columnas irrelevantes ===</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>irrelevantes <span class="op">=</span> [</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;tweetId&#39;</span>, <span class="st">&#39;tweetUrl&#39;</span>,                 <span class="co"># IDs/URLs</span></span>
@@ -4594,7 +4605,7 @@ Shape original: (158873, 26) → Shape limpio: (158873, 11)</code></pre>
 </section>
 <section id="crear-target-user_type" class="level2">
 <h2 class="anchored" data-anchor-id="crear-target-user_type">Crear target “user_type”</h2>
-<div id="20aebf61" class="cell" data-execution_count="14">
+<div id="f46edf79" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Heurística para etiquetar &quot;bot&quot; vs &quot;real&quot;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label_user_type(row):</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> <span class="dv">0</span></span>
@@ -4668,7 +4679,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="seleccion-de-columnas-para-entrenar" class="level2">
 <h2 class="anchored" data-anchor-id="seleccion-de-columnas-para-entrenar">Seleccion de columnas para entrenar</h2>
-<div id="9caef6b2" class="cell" data-execution_count="15">
+<div id="18daf71c" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definición de columnas</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>text_col <span class="op">=</span> <span class="st">&#39;content&#39;</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>target_col <span class="op">=</span> <span class="st">&#39;user_type&#39;</span></span>
@@ -4753,7 +4764,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="train-test-split-estratificado" class="level2">
 <h2 class="anchored" data-anchor-id="train-test-split-estratificado">Train/ Test Split estratificado</h2>
-<div id="72b8a991" class="cell" data-execution_count="16">
+<div id="cb406291" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_train.drop(columns<span class="op">=</span>[target_col])</span>
@@ -4777,7 +4788,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="columntransformer-tf-idf-ohe-escala-numérica" class="level2">
 <h2 class="anchored" data-anchor-id="columntransformer-tf-idf-ohe-escala-numérica">ColumnTransformer (TF-IDF + OHE + escala numérica)</h2>
-<div id="d63956a3" class="cell" data-execution_count="17">
+<div id="b8c14aaf" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
@@ -4806,7 +4817,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="pipelines-lr-con-textometa-y-nb-solo-texto" class="level2">
 <h2 class="anchored" data-anchor-id="pipelines-lr-con-textometa-y-nb-solo-texto">Pipelines (LR con texto+meta, y NB solo texto)</h2>
-<div id="c1e29dd0" class="cell" data-execution_count="18">
+<div id="ecb44d00" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> MultinomialNB</span>
@@ -4831,7 +4842,7 @@ Name: proportion, dtype: float64</code></pre>
 </section>
 <section id="entrenar-y-evaluar" class="level2">
 <h2 class="anchored" data-anchor-id="entrenar-y-evaluar">Entrenar y Evaluar</h2>
-<div id="638c7c81" class="cell" data-execution_count="19">
+<div id="5345d81d" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, ConfusionMatrixDisplay</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>

@@ -1,2 +1,41 @@
-/.quarto/
+# ===== Python / Jupyter =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.ipynb_checkpoints/
+*.log
+
+# (borra esta línea si SÍ quieres versionar notebooks)
+*.ipynb
+
+# ===== Entornos / secretos =====
+.venv/
+venv/
+ENV/
+*.env
+
+# ===== Quarto / cachés =====
+.quarto/
+_freeze/
 **/*.quarto_ipynb
+*_files/
+*_cache/
+
+# ===== VS Code =====
+.vscode/
+.history/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Datos locales (opcional) =====
+data/*.csv
+
+# ===== ¡NO ignores el sitio! =====
+!docs/
+
+
+/.quarto/

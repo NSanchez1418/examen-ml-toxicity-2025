@@ -1,0 +1,53 @@
+---
+title: "test"
+---
+
+```{python}
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.corpus import stopwords
+import nltk
+nltk.download('stopwords')
+```
+
+
+# Paso 1: Importar y preparar tus textos
+
+
+```{python}
+docs = [
+    "I love machine learning",
+    "machine learning is part of AI",
+    "I love AI and deep learning"
+]
+```
+
+# Paso 2: Inicializar el CountVectorizer
+
+```{python}
+
+stop_words = stopwords.words('english')
+vectorizer = CountVectorizer(stop_words=stop_words)
+```
+
+## fit: Aprende el vocabulari
+```{python}
+X = vectorizer.fit_transform(docs)
+```
+
+```{python}
+vectorizer.get_feature_names_out()
+```
+
+## transform: Crea la matriz de conteos (sparse matrix)
+Cada fila representa un documento, cada columna una palabra del vocabulario
+```{python}
+X.toarray()
+```
+
+## Visualizar la matriz como DataFrame
+
+```{python}
+df = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
+print(df)
+```

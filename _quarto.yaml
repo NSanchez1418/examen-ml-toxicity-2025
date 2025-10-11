@@ -8,8 +8,12 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: clasificacion_incidentes.qmd
-        text: Clasificación
+      - text: Clasificación
+        menu:
+          - href: clasificacion_incidentes.qmd
+            text: Incidentes (clásico)
+          - href: tweets_classification.qmd
+            text: Tweets Classification
       - href: regresion_pm25.qmd
         text: Regresión
 
@@ -20,3 +24,5 @@ format:
     code-fold: true
     fig-align: center
     embed-resources: true
+
+
