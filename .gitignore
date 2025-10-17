@@ -1,11 +1,12 @@
-# entornos / cachés / temporales
 .venv/
 __pycache__/
 .quarto/
 *.quarto_ipynb
-*.ipynb
-.DS_Store
 .vscode/
-
-# si guardas datos locales pesados:
+.DS_Store
+_site/
 data/
+
+
+/.quarto/
+**/*.quarto_ipynb

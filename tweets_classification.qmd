@@ -80,9 +80,13 @@ from sklearn.metrics import classification_report, confusion_matrix, ConfusionMa
 # Otras utilidades
 
 ```{python}
-from IPython.display import display
+# --- NLTK stopwords: solo descarga si faltan ---
 import nltk
-nltk.download('stopwords')
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords', quiet=True)
+
 ```
 
 # Cargar dataset desde GitHub
@@ -269,12 +273,14 @@ import sys
 import subprocess
 import spacy
 
-# 1) Cargar el modelo de spaCy (y si no existe, descargarlo)
+# --- spaCy ES: carga; solo descarga si NO está instalado ---
+import sys, subprocess, spacy
 try:
     nlp = spacy.load("es_core_news_sm")
 except OSError:
     subprocess.run([sys.executable, "-m", "spacy", "download", "es_core_news_sm"], check=True)
     nlp = spacy.load("es_core_news_sm")
+
 
 # 2) Stopwords (puedes combinarlas con NLTK si quieres)
 sp_stop = nlp.Defaults.stop_words
@@ -423,7 +429,7 @@ El uso de **bigramas** y **stopwords en español** mejoró la señal textual, y 
 - La etiqueta heurística es útil para experimentación, aunque no reemplaza una anotación humana.
 - Logistic Regression es más estable que Naive Bayes en contextos con metadatos.
 - Se podrían probar mejoras con técnicas de balanceo (SMOTE, undersampling) o modelos no lineales (árboles, boosting).
-`- Usamos TF-IDF porque pondera términos característicos del documento frente al corpus, mejorando la discriminación respecto a conteos puros. Aplicamos n-gramas (1,2) para capturar expresiones cortas (“compra seguidores”, “cuenta nueva”). Antes, realizamos limpieza específica de Twitter (URLs, menciones, hashtags, emojis) y lematización en español (spaCy), además de eliminar stopwords y forzar minúsculas, lo que reduce ruido y unifica variantes morfológicas (p. ej., “comprar”, “comprando”, “compró” → “comprar”).
+- Usamos TF-IDF porque pondera términos característicos del documento frente al corpus, mejorando la discriminación respecto a conteos puros. Aplicamos n-gramas (1,2) para capturar expresiones cortas (“compra seguidores”, “cuenta nueva”). Antes, realizamos limpieza específica de Twitter (URLs, menciones, hashtags, emojis) y lematización en español (spaCy), además de eliminar stopwords y forzar minúsculas, lo que reduce ruido y unifica variantes morfológicas (p. ej., “comprar”, “comprando”, “compró” → “comprar”).
 ### Trabajo futuro
 - Refinar la heurística del target con detección semiautomática.
 - Evaluar interpretabilidad con `coef_` de LR (palabras más predictivas).
