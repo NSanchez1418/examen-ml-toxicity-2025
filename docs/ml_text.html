@@ -3888,10 +3888,21 @@ vertical-align: -.125em;
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./clasificacion_incidentes.html"> 
-<span class="menu-text">Clasificación</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-clasificación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Clasificación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-clasificación">    
+        <li>
+    <a class="dropdown-item" href="./clasificacion_incidentes.html">
+ <span class="dropdown-text">Incidentes (clásico)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./tweets_classification.html">
+ <span class="dropdown-text">Tweets Classification</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./regresion_pm25.html"> 
 <span class="menu-text">Regresión</span></a>
@@ -3946,7 +3957,7 @@ vertical-align: -.125em;
 
 <section id="cargar-librerías" class="level1">
 <h1>Cargar librerías</h1>
-<div id="1d95f467" class="cell" data-execution_count="1">
+<div id="49cf823e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3991,7 +4002,7 @@ vertical-align: -.125em;
 </section>
 <section id="cargar-data" class="level1">
 <h1>Cargar data</h1>
-<div id="cd18ba90" class="cell" data-execution_count="2">
+<div id="3ae2d9b9" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/erickedu85/dataset/master/story.txt&quot;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.get(url)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>r.encoding <span class="op">=</span> <span class="st">&#39;utf-8&#39;</span></span>
@@ -4005,7 +4016,7 @@ vertical-align: -.125em;
 </section>
 <section id="tokenización" class="level1">
 <h1>Tokenización</h1>
-<div id="2b50001c" class="cell" data-execution_count="3">
+<div id="08a8c298" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> word_tokenize</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> word_tokenize(story)</span>
@@ -4036,7 +4047,7 @@ vertical-align: -.125em;
 </section>
 <section id="stemming-and-lemmatization" class="level1">
 <h1>Stemming and Lemmatization</h1>
-<div id="0f6327eb" class="cell" data-execution_count="4">
+<div id="f0b8f0fd" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> PorterStemmer <span class="im">as</span> stemmer</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> WordNetLemmatizer <span class="im">as</span> lemmatizer</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> wordnet</span>
@@ -4058,7 +4069,7 @@ LEMMATIZATION:  change</code></pre>
 </section>
 <section id="part-of-speech---pos-tag" class="level1">
 <h1>PART OF SPEECH - POS TAG</h1>
-<div id="48c8adf7" class="cell" data-execution_count="5">
+<div id="ccfdd1a8" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk <span class="im">import</span> pos_tag</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> pos_tag(words)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>pos[:<span class="dv">20</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4088,7 +4099,7 @@ LEMMATIZATION:  change</code></pre>
 </section>
 <section id="stop-words" class="level1">
 <h1>STOP WORDS</h1>
-<div id="5337f840" class="cell" data-execution_count="6">
+<div id="6af7f6e2" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords <span class="im">as</span> stop</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>stopwords <span class="op">=</span> stop.words(<span class="st">&quot;english&quot;</span>)</span>
@@ -4122,7 +4133,7 @@ LEMMATIZATION:  change</code></pre>
 </section>
 <section id="stop-words-in-story" class="level1">
 <h1>STOP WORDS IN STORY</h1>
-<div id="ead9959b" class="cell" data-execution_count="7">
+<div id="d6d84bfe" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>tokens <span class="op">=</span> nltk.word_tokenize(story.lower())</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tokens[:20]</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>

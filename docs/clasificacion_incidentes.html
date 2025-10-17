@@ -3888,10 +3888,21 @@ vertical-align: -.125em;
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./clasificacion_incidentes.html" aria-current="page"> 
-<span class="menu-text">Clasificación</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-clasificación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Clasificación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-clasificación">    
+        <li>
+    <a class="dropdown-item" href="./clasificacion_incidentes.html">
+ <span class="dropdown-text">Incidentes (clásico)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./tweets_classification.html">
+ <span class="dropdown-text">Tweets Classification</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./regresion_pm25.html"> 
 <span class="menu-text">Regresión</span></a>
@@ -3943,7 +3954,7 @@ vertical-align: -.125em;
 
 <section id="problemática-detectar-si-un-incidente-será-un-accidente-con-heridos-usando-solo-variables-numéricas" class="level1">
 <h1>Problemática: detectar si un incidente será un “accidente con heridos” usando solo variables numéricas</h1>
-<div id="b62b3506" class="cell" data-execution_count="1">
+<div id="a5c1dddc" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Importar librerías</span></span>

@@ -1,0 +1,94 @@
+---
+title: "Introducción a Altair"
+---
+
+# Introduccion a Altair
+
+
+## Importar el dataset
+
+```{python}
+import altair as alt
+from vega_datasets import data
+cars = data.cars()
+print(cars.head())
+```
+
+## Visualización en Altair
+
+### Visualización scatterplot
+
+```{python}
+
+alt.Chart(cars).mark_point().encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+#interactive: zoom, brush
+
+```
+
+### Visualización scatterplot con color
+
+```{python}
+alt.Chart(cars).mark_point(filled=True).encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    color="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+
+```
+
+### Visualización scatterplot con color
+
+
+```{python}
+alt.Chart(cars).mark_point(filled=True).encode(
+    x="Miles_per_Gallon",
+    y="Horsepower",
+    color="Origin",
+    shape="Origin",
+    tooltip=["Name","Origin","Miles_per_Gallon","Horsepower"]
+).interactive()
+
+```
+
+### Agregaciones
+
+Gráfico de barras
+
+`count()` de cada una de los origines
+```{python}
+alt.Chart(cars).mark_bar().encode(
+    alt.X('Origin',sort='-y'),
+    alt.Y('count()')
+)
+
+```
+
+`mean()` de cada una de los origines
+
+```{python}
+alt.Chart(cars).mark_bar().encode(
+    alt.X('Origin',sort='-y'),
+    alt.Y('mean(Weight_in_lbs)'),
+    tooltip=['Origin','mean(Weight_in_lbs)']
+).properties(
+    width=200,
+    height=200
+)
+```
+
+Gráfico lineal
+
+```{python}
+alt.Chart(cars).mark_line(point=True).encode(
+    alt.X('Year'),
+    alt.Y('mean(Weight_in_lbs)'),
+    alt.Color('Origin')
+).properties(
+    width=600
+).interactive()
+```

@@ -3888,10 +3888,21 @@ vertical-align: -.125em;
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./clasificacion_incidentes.html"> 
-<span class="menu-text">Clasificación</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-clasificación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Clasificación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-clasificación">    
+        <li>
+    <a class="dropdown-item" href="./clasificacion_incidentes.html">
+ <span class="dropdown-text">Incidentes (clásico)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./tweets_classification.html">
+ <span class="dropdown-text">Tweets Classification</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./regresion_pm25.html"> 
 <span class="menu-text">Regresión</span></a>
@@ -3944,7 +3955,7 @@ vertical-align: -.125em;
 </header>
 
 
-<div id="d7590bc4" class="cell" data-execution_count="1">
+<div id="6afdbe5b" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -3964,7 +3975,7 @@ vertical-align: -.125em;
 </div>
 <section id="paso-1-importar-y-preparar-tus-textos" class="level1">
 <h1>Paso 1: Importar y preparar tus textos</h1>
-<div id="e0256fb7" class="cell" data-execution_count="2">
+<div id="a3585bbc" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> [</span>
@@ -3977,7 +3988,7 @@ vertical-align: -.125em;
 </section>
 <section id="paso-2-inicializar-el-countvectorizer" class="level1">
 <h1>Paso 2: Inicializar el CountVectorizer</h1>
-<div id="8169ec48" class="cell" data-execution_count="3">
+<div id="ede0b0a1" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> stopwords.words(<span class="st">&#39;english&#39;</span>)</span>
@@ -3986,13 +3997,13 @@ vertical-align: -.125em;
 </div>
 <section id="fit-aprende-el-vocabulari" class="level2">
 <h2 class="anchored" data-anchor-id="fit-aprende-el-vocabulari">fit: Aprende el vocabulari</h2>
-<div id="ed6c325d" class="cell" data-execution_count="4">
+<div id="bbfd953f" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> vectorizer.fit_transform(docs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="a950ccca" class="cell" data-execution_count="5">
+<div id="390df9f4" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vectorizer.get_feature_names_out()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4005,7 +4016,7 @@ vertical-align: -.125em;
 <section id="transform-crea-la-matriz-de-conteos-sparse-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="transform-crea-la-matriz-de-conteos-sparse-matrix">transform: Crea la matriz de conteos (sparse matrix)</h2>
 <p>Cada fila representa un documento, cada columna una palabra del vocabulario</p>
-<div id="266b76a7" class="cell" data-execution_count="6">
+<div id="2c0b5d74" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>X.toarray()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4019,7 +4030,7 @@ vertical-align: -.125em;
 </section>
 <section id="visualizar-la-matriz-como-dataframe" class="level2">
 <h2 class="anchored" data-anchor-id="visualizar-la-matriz-como-dataframe">Visualizar la matriz como DataFrame</h2>
-<div id="ea89d3d5" class="cell" data-execution_count="7">
+<div id="769e71ec" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(X.toarray(), columns<span class="op">=</span>vectorizer.get_feature_names_out())</span>

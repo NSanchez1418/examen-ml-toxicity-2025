@@ -3904,10 +3904,21 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./clasificacion_incidentes.html"> 
-<span class="menu-text">Clasificación</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-clasificación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Clasificación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-clasificación">    
+        <li>
+    <a class="dropdown-item" href="./clasificacion_incidentes.html">
+ <span class="dropdown-text">Incidentes (clásico)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./tweets_classification.html">
+ <span class="dropdown-text">Tweets Classification</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./regresion_pm25.html"> 
 <span class="menu-text">Regresión</span></a>
@@ -3967,7 +3978,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 
 <section id="importar-librerías" class="level1">
 <h1>Importar librerías</h1>
-<div id="466e23c8" class="cell" data-execution_count="1">
+<div id="8bf8a640" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer <span class="co">#tfidf</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
@@ -3996,7 +4007,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="dataset-ejemplo-corpus" class="level1">
 <h1>Dataset ejemplo Corpus</h1>
-<div id="09f47c8e" class="cell" data-execution_count="2">
+<div id="8ff7379a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> [</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Machine learning is all fun 1990 :) :( 🙁&quot;</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Machine learning is part of AI AI 2000 🙁&quot;</span>,</span>
@@ -4007,13 +4018,13 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="tfidfvectorizer" class="level1">
 <h1>TfidfVectorizer()</h1>
-<div id="6be49934" class="cell" data-execution_count="3">
+<div id="119e2085" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> stopwords.words(<span class="st">&quot;english&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>vectorizer <span class="op">=</span> TfidfVectorizer(stop_words<span class="op">=</span>stop_words)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="ejemplo-de-función-de-limpieza" class="level2">
 <h2 class="anchored" data-anchor-id="ejemplo-de-función-de-limpieza">Ejemplo de función de limpieza</h2>
-<div id="c13e8f77" class="cell" data-execution_count="4">
+<div id="21a62bdc" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_wordnet_pos(treebank_tag):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(&quot;treebank_tag&quot;,treebank_tag)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> treebank_tag.startswith(<span class="st">&#39;J&#39;</span>):</span>
@@ -4052,7 +4063,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="preprocesamiento-manual" class="level1">
 <h1>Preprocesamiento manual</h1>
-<div id="d1cebdda" class="cell" data-execution_count="5">
+<div id="81af981f" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> doc <span class="kw">in</span> corpus:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> preprocessing_document(doc)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;doc: </span><span class="sc">{</span>doc<span class="sc">}</span><span class="ss">, preprocesamiento: </span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -4066,14 +4077,14 @@ doc: I love AI and machine learning, preprocesamiento: i love ai and machine lea
 <section id="fit_transform" class="level2">
 <h2 class="anchored" data-anchor-id="fit_transform">Fit_transform</h2>
 <p>Aprende del Corpus (vocabulario) y del ser caso elimina las stop-words</p>
-<div id="a35f7814" class="cell" data-execution_count="6">
+<div id="14babd1a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>corpus_cleaned <span class="op">=</span> [preprocessing_document(doc) <span class="cf">for</span> doc <span class="kw">in</span> corpus]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> vectorizer.fit_transform(corpus_cleaned)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="obtener-las-palabras-finales" class="level2">
 <h2 class="anchored" data-anchor-id="obtener-las-palabras-finales">Obtener las palabras finales</h2>
-<div id="b6faf22f" class="cell" data-execution_count="7">
+<div id="06ab3023" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vectorizer.get_feature_names_out()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>array([&#39;ai&#39;, &#39;fun&#39;, &#39;learning&#39;, &#39;love&#39;, &#39;machine&#39;, &#39;part&#39;], dtype=object)</code></pre>
@@ -4084,7 +4095,7 @@ doc: I love AI and machine learning, preprocesamiento: i love ai and machine lea
 <section id="matriz-de-tfidf" class="level1">
 <h1>Matriz de TFIDF</h1>
 <p>Esta matriz muestra cada fila un documento, y cada columna una palabra</p>
-<div id="4b44e4bf" class="cell" data-execution_count="8">
+<div id="2aeaa46c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>X.toarray()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>array([[0.        , 0.8046125 , 0.41988018, 0.        , 0.41988018,
@@ -4097,7 +4108,7 @@ doc: I love AI and machine learning, preprocesamiento: i love ai and machine lea
         0.        ]])</code></pre>
 </div>
 </div>
-<div id="06bef25c" class="cell" data-execution_count="9">
+<div id="2ca87504" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(X.toarray(),columns<span class="op">=</span>vectorizer.get_feature_names_out())</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">

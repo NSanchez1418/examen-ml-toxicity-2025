@@ -1,41 +1,11 @@
-# ===== Python / Jupyter =====
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.egg-info/
-.ipynb_checkpoints/
-*.log
-
-# (borra esta línea si SÍ quieres versionar notebooks)
-*.ipynb
-
-# ===== Entornos / secretos =====
+# entornos / cachés / temporales
 .venv/
-venv/
-ENV/
-*.env
-
-# ===== Quarto / cachés =====
+__pycache__/
 .quarto/
-_freeze/
-**/*.quarto_ipynb
-*_files/
-*_cache/
-
-# ===== VS Code =====
-.vscode/
-.history/
-
-# ===== OS =====
+*.quarto_ipynb
+*.ipynb
 .DS_Store
-Thumbs.db
+.vscode/
 
-# ===== Datos locales (opcional) =====
-data/*.csv
-
-# ===== ¡NO ignores el sitio! =====
-!docs/
-
-
-/.quarto/
+# si guardas datos locales pesados:
+data/

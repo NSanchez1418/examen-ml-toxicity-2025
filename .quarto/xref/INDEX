@@ -25,5 +25,17 @@
   },
   "text_classification.qmd": {
     "text_classification.html": "39951ce0"
+  },
+  "knn.qmd": {
+    "knn.html": "7d77debd"
+  },
+  "altair.qmd": {
+    "altair.html": "964867ef"
+  },
+  "kmeans.qmd": {
+    "kmeans.html": "3cabd5ad"
+  },
+  "hac.qmd": {
+    "hac.html": "3b59ad59"
   }
 }

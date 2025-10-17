@@ -3904,10 +3904,21 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./clasificacion_incidentes.html"> 
-<span class="menu-text">Clasificación</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-clasificación" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Clasificación</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-clasificación">    
+        <li>
+    <a class="dropdown-item" href="./clasificacion_incidentes.html">
+ <span class="dropdown-text">Incidentes (clásico)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./tweets_classification.html">
+ <span class="dropdown-text">Tweets Classification</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link active" href="./regresion_pm25.html" aria-current="page"> 
 <span class="menu-text">Regresión</span></a>
@@ -3962,7 +3973,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="cargar-y-explorar" class="level2">
 <h2 class="anchored" data-anchor-id="cargar-y-explorar">1) Cargar y explorar</h2>
-<div id="620af975" class="cell" data-execution_count="1">
+<div id="273fb8b3" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -4368,7 +4379,7 @@ R²  : 0.9324</code></pre>
 </section>
 <section id="conclusiones-regresión-pm2.5-quito" class="level2">
 <h2 class="anchored" data-anchor-id="conclusiones-regresión-pm2.5-quito">Conclusiones — Regresión (PM2.5 Quito)</h2>
-<div id="2b891c5e" class="cell" data-execution_count="2">
+<div id="3aae9992" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Asegurar que el objetivo (y) sea la medida de PM2.5 ---</span></span>

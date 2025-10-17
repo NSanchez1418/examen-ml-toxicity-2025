@@ -260,6 +260,60 @@ print("Distrib y_train:\n", y_train.value_counts(normalize=True).round(3))
 
 ```
 
+## Limpieza de texto + lematización  (spaCy)
+
+```{python}
+# --- Limpieza de texto + lematización en español (spaCy) ---
+import re
+import sys
+import subprocess
+import spacy
+
+# 1) Cargar el modelo de spaCy (y si no existe, descargarlo)
+try:
+    nlp = spacy.load("es_core_news_sm")
+except OSError:
+    subprocess.run([sys.executable, "-m", "spacy", "download", "es_core_news_sm"], check=True)
+    nlp = spacy.load("es_core_news_sm")
+
+# 2) Stopwords (puedes combinarlas con NLTK si quieres)
+sp_stop = nlp.Defaults.stop_words
+
+# 3) Limpiadores básicos de Twitter
+_url   = re.compile(r"https?://\S+|www\.\S+")
+_user  = re.compile(r"@\w+")              # elimina @usuario
+_hash  = re.compile(r"#")                  # quita '#' pero deja la palabra
+_emoji = re.compile(r"[^\w\sáéíóúñüÁÉÍÓÚÑÜ]")  # limpia signos/emojis (ajustable)
+
+def clean_text(text: str) -> str:
+    text = text.lower().strip()
+    text = _url.sub(" ", text)
+    text = _user.sub(" ", text)
+    text = _hash.sub("", text)             # "#vacunas" -> "vacunas"
+    text = _emoji.sub(" ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text
+
+# 4) Analizador para sklearn que devuelve tokens lematizados sin stopwords
+def spacy_analyzer(doc: str):
+    doc = clean_text(doc)
+    sp = nlp(doc)
+    return [
+        tok.lemma_
+        for tok in sp
+        if tok.is_alpha                  # solo letras
+        and tok.lemma_ not in sp_stop    # sin stopwords
+        and len(tok.lemma_) > 2          # descarta tokens muy cortos
+    ]
+
+# (opcional) prueba rápida
+# ejemplo = "RT @usuario: ¡Viendo #Debate2025 en https://x.com! Los candidatos hablando..."
+# print(spacy_analyzer(ejemplo))
+
+```
+
+
+
 ## ColumnTransformer (TF-IDF + OHE + escala numérica)
 
 ```{python}
@@ -270,13 +324,19 @@ from nltk.corpus import stopwords as nltk_stopwords   # ⬅️ NUEVO
 
 spanish_stop = nltk_stopwords.words('spanish')        # ⬅️ NUEVO
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 text_vectorizer = TfidfVectorizer(
-    stop_words=spanish_stop,      # ⬅️ en lugar de 'spanish'
+    analyzer=spacy_analyzer,   # usamos nuestro analizador con limpieza+lemmas
+    ngram_range=(1, 2),
     min_df=5,
     max_df=0.90,
-    ngram_range=(1, 2),
-    max_features=50000
+    max_features=50_000,
+    strip_accents='unicode',
+    lowercase=False            # ya pasamos a minúsculas en clean_text()
 )
+
+
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -363,7 +423,7 @@ El uso de **bigramas** y **stopwords en español** mejoró la señal textual, y 
 - La etiqueta heurística es útil para experimentación, aunque no reemplaza una anotación humana.
 - Logistic Regression es más estable que Naive Bayes en contextos con metadatos.
 - Se podrían probar mejoras con técnicas de balanceo (SMOTE, undersampling) o modelos no lineales (árboles, boosting).
-
+`- Usamos TF-IDF porque pondera términos característicos del documento frente al corpus, mejorando la discriminación respecto a conteos puros. Aplicamos n-gramas (1,2) para capturar expresiones cortas (“compra seguidores”, “cuenta nueva”). Antes, realizamos limpieza específica de Twitter (URLs, menciones, hashtags, emojis) y lematización en español (spaCy), además de eliminar stopwords y forzar minúsculas, lo que reduce ruido y unifica variantes morfológicas (p. ej., “comprar”, “comprando”, “compró” → “comprar”).
 ### Trabajo futuro
 - Refinar la heurística del target con detección semiautomática.
 - Evaluar interpretabilidad con `coef_` de LR (palabras más predictivas).
