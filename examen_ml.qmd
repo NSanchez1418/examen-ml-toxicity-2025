@@ -1,5 +1,7 @@
 ---
 title: "Examen – ML con Tweets (TOXICITY)"
+author: "Noé Sánchez"
+date: "Octubre 2025"
 format:
   html:
     theme: cosmo
@@ -376,7 +378,7 @@ plt.close()
 **Justificación — Regresión:**
 - *MAE* (interpretable en unidades de toxicidad; robusto a outliers).  
 - *RMSE* (penaliza más los errores grandes).  
-- *R²* (proporción de varianza explicada).  
+- *R²* (proporción de varianza explicada) cercano a 0: explicativa modesta; cercano a 1: muy buena.  
 - El **scatter real vs. predicho** revela sesgo/varianza; el **histograma de residuales** debería centrarse en 0 sin colas extremas.
 
 
@@ -461,16 +463,59 @@ print(tabla.to_string())
 ![](docs/kmeans_2d.png){width=60%}
 
 **Lectura — Clustering:**
-- **Silhouette/inercia** (opcional) orientan la calidad intrínseca; aquí mostramos la separación visual en 2D (SVD).  
+- **Silhouette/inercia** (opcional) orientan la calidad intrínseca; aquí mostramos la separación visual en 2D (SVD).  ( >0.25 sugiere estructura; >0.5 clara separación).
 - La **crosstab cluster vs. clase** indica si los clusters se alinean con la toxicidad o capturan otros ejes (temas, cuentas, contexto).  
 - Útil para exploración y segmentación previa a modelos supervisados.
 
 
 # Conclusiones
 
-**Conclusiones:**
-- **Datos:** sin duplicados; nulos manejables; texto utilizable tras limpieza ligera.  
-- **Clasificación:** modelo base (LogReg) con TF-IDF + OHE + escala; métricas reportadas y visualizaciones (confusión/ROC).  
-- **Regresión:** errores (MAE/RMSE) y ajuste (R²) razonables para una primera pasada; residuales sin patrones fuertes.  
-- **Clustering:** agrupaciones comprensibles; alineación parcial con la toxicidad.  
-**Futuro:** ajustar umbral por costos, *class_weight='balanced'*, tuning de hiperparámetros, embeddings (sentence-transformers) y modelos no lineales (árboles/GBM).
+# Conclusiones finales
+
+Calidad y estructura de los datos
+El dataset de 1 500 tweets presenta buena integridad: sin duplicados, valores nulos concentrados solo en hashtags y toxicity_score (≈ 10 %), y variables numéricas sin outliers extremos (según IQR). La distribución de TOXICITY es asimétrica a la izquierda (predominan valores < 0.3), lo cual explica el desequilibrio entre clases tras la binarización.
+
+Preprocesamiento y representación
+Se aplicó una limpieza ligera de texto (URLs, menciones, hashtags, símbolos) y se usó TF-IDF (1–2 gramas) para capturar contexto corto. Las variables categóricas fueron codificadas con OneHotEncoder y las numéricas escaladas con StandardScaler (with_mean=False). Todo el flujo se estructuró en un ColumnTransformer + Pipeline, garantizando reproducibilidad y evitando fugas entre train/test.
+
+Clasificación (binaria, umbral = 0.5)
+El valor 0.5 se adoptó como umbral neutro del rango [0, 1] de toxicity_score, al no existir costos diferenciales entre clases. Con ese corte:
+
+Accuracy = 0.819, correcto como baseline general.
+
+Precision macro = 0.664, Recall macro = 0.532, F1 macro = 0.519, mostrando que el modelo privilegia la clase 0 (no tóxica) debido al desbalance (≈ 18 % positivos).
+
+ROC-AUC = 0.664, indica capacidad discriminante moderada.
+
+La matriz de confusión (217 VN, 4 FP, 45 FN, 4 VP) evidencia que el modelo es conservador: pocos falsos positivos pero varios falsos negativos.
+
+Si el objetivo fuera maximizar detección de toxicidad, convendría bajar el umbral (≈ 0.4) o usar class_weight='balanced'.
+
+Regresión (TOXICITY continua)
+Usando el mismo preprocesamiento y un modelo lineal (Ridge), se obtuvo:
+
+MAE = 0.1622, RMSE = 0.1963, R² = 0.3279, lo que significa que el modelo explica un 33 % de la varianza.
+
+La nube real vs. predicho muestra tendencia alineada (sin sesgo sistemático).
+
+El histograma de residuales es centrado en 0 y aproximadamente simétrico, señal de buen ajuste para datos con ruido semántico.
+
+Clustering (K-Means sobre texto limpio)
+Con TF-IDF + SVD (2D) y k = 3, se obtuvo una silhouette ≈ 0.35, valor típico de separación moderada. La tabla cluster vs. clase reveló:
+
+C0 ≈ 81.5 % no tóxicos, C2 ≈ 97.6 % no tóxicos, C1 mezclado (≈ 81.3 % no tóxicos).
+Esto sugiere que los grupos reflejan temas y estilos lingüísticos además del nivel de toxicidad, por lo que el modelo de clustering capta heterogeneidad semántica más allá del target binario.
+
+# Reflexiones y trabajo futuro
+
+Balanceo de clases – Probar SMOTE, undersampling o class_weight='balanced' para mejorar recall de la clase positiva.
+
+Optimización del umbral – Analizar la curva Precision-Recall para definir cortes según costo FN/FP.
+
+Modelos no lineales – Implementar Random Forest, XGBoost o SVM kernelizado sobre embeddings (sentence-transformers).
+
+Ampliar corpus – Más tweets con anotaciones finas de toxicidad y contexto político local para reducir sesgo de idioma.
+
+Interpretabilidad – Aplicar LIME o SHAP para identificar términos más influyentes en la predicción de toxicidad.
+
+Despliegue aplicado – Integrar el pipeline en una herramienta web de monitoreo de discurso (dashboard o API REST).

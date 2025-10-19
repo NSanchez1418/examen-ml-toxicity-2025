@@ -6,7 +6,9 @@ execute:
   freeze: auto    # congela salidas: no re-ejecuta salvo que cambie el código
 
 website:
-  title: "Machine Learning — Proyecto"
+  title: "Examen Final — ML con Tweets (TOXICITY)"
+  description: "Análisis, tweets con métricas de toxicidad."
+  site-url: "https://nsanchez1418.github.io/examen-ml-toxicity-2025/"
   navbar:
     left:
       - href: index.qmd
@@ -21,7 +23,9 @@ website:
             text: Regresión
       - href: examen_ml.qmd         # ← NUEVO
         text: Examen (TOXICITY)
-    
+  page-footer:
+    left: "Noé Sánchez"  
+    right: "Repositorio en [GitHub](https://github.com/NSanchez1418/examen-ml-toxicity-2025)"
 format:
   html:
     theme: cosmo
