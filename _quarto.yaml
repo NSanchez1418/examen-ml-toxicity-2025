@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: docs
 
+execute:
+  freeze: auto    # congela salidas: no re-ejecuta salvo que cambie el código
+
 website:
   title: "Machine Learning — Proyecto"
   navbar:
@@ -14,9 +17,11 @@ website:
             text: Incidentes (clásico)
           - href: tweets_classification.qmd
             text: Tweets Classification
-      - href: regresion_pm25.qmd
-        text: Regresión
-
+          - href: regresion_pm25.qmd
+            text: Regresión
+      - href: examen_ml.qmd         # ← NUEVO
+        text: Examen (TOXICITY)
+    
 format:
   html:
     theme: cosmo
@@ -24,5 +29,6 @@ format:
     code-fold: true
     fig-align: center
     embed-resources: true
+    fig-format: png
 
 

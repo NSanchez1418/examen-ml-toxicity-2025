@@ -1,0 +1,476 @@
+---
+title: "Examen – ML con Tweets (TOXICITY)"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    fig-align: center
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Dataset y objetivo
+
+En este examen trabajamos con **1 500 tweets** en español (Ecuador) con metadatos y una columna continua **`TOXICITY`** (0–1) generada con Perspective API.  
+El flujo incluye **EDA, preprocesamiento, clasificación, regresión y clustering**, más conclusiones.
+
+```{python}
+# --- Preparación general ---
+import os, sys
+import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from IPython.display import display
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import (
+    classification_report, ConfusionMatrixDisplay, roc_auc_score, RocCurveDisplay,
+    mean_absolute_error, mean_squared_error, r2_score
+)
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression, Ridge
+from sklearn.cluster import KMeans
+from sklearn.decomposition import TruncatedSVD
+
+# Stopwords
+import nltk
+from nltk.corpus import stopwords as nltk_stop
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords', quiet=True)
+spanish_stop = nltk_stop.words('spanish')
+
+# Función para guardar figuras
+def savefig(path, dpi=140):
+    plt.tight_layout()
+    plt.savefig(path, dpi=dpi, bbox_inches="tight")
+    plt.close()
+
+# Crear carpeta de salida
+os.makedirs("docs", exist_ok=True)
+
+# --- Cargar datos ---
+url = "https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/1500_tweets_con_toxicity.csv"
+df = pd.read_csv(url, low_memory=False)
+
+TARGET = "toxicity_score" if "toxicity_score" in df.columns else "TOXICITY"
+TEXT_COL = "content" if "content" in df.columns else df.select_dtypes(include=["object","string"]).columns[0]
+
+print("✅ Dataset cargado:", df.shape)
+print("TARGET:", TARGET)
+print("Texto:", TEXT_COL)
+display(df.head(3))
+```
+# EDA resumido
+
+```{python}
+# === EDA mínimo y a prueba de indentación ===
+
+from IPython.display import display
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import CountVectorizer
+
+print("Shape:", df.shape)
+print("\nTipos (primeras 12):\n", df.dtypes.head(12))
+
+# Duplicados y nulos (top-10)
+
+print("\nDuplicados por fila completa:", df.duplicated().sum())
+print("\nNulos por columna (top 10):")
+print(df.isna().sum().sort_values(ascending=False).head(10))
+
+# Descriptivos numéricos + mediana, q05, q95
+
+num_df = df.select_dtypes("number")
+desc = num_df.describe().T
+stats_full = pd.concat([
+desc,
+num_df.median().rename("median"),
+num_df.quantile(0.05).rename("q05"),
+num_df.quantile(0.95).rename("q95")
+], axis=1)
+print("\nEstadísticos numéricos (con mediana y q05/q95):")
+display(stats_full)
+
+# Histograma del TARGET (único gráfico necesario para continuar)
+
+fig, ax = plt.subplots(figsize=(5,3))
+ax.hist(df[TARGET].dropna(), bins=30, edgecolor="white")
+ax.set_title(f"Distribución de {TARGET}")
+ax.set_xlabel(TARGET); ax.set_ylabel("Frecuencia")
+plt.tight_layout()
+savefig("docs/eda_toxicity_hist.png")
+
+# Frecuencia de palabras (top-15) sin condicionales
+
+cv = CountVectorizer(stop_words=spanish_stop, max_features=1000)
+Xc = cv.fit_transform(df[TEXT_COL].fillna("").astype(str))
+tokens = cv.get_feature_names_out()
+freq = np.asarray(Xc.sum(axis=0)).ravel()
+top = (pd.DataFrame({"token": tokens, "freq": freq})
+.sort_values("freq", ascending=False)
+.head(15)
+.sort_values("freq", ascending=True))  # para barh ascendente
+
+fig, ax = plt.subplots(figsize=(7,4))
+ax.barh(top["token"], top["freq"])
+ax.set_title("Tokens más frecuentes (top 15)")
+ax.set_xlabel("Frecuencia")
+plt.tight_layout()
+savefig("docs/eda_top_words.png")
+
+```
+
+![](docs/eda_toxicity_hist.png){width=70%}
+![](docs/eda_top_words.png){width=70%}
+![](docs/eda_cat_bar.png){width=70%}
+![](docs/eda_scatter.png){width=60%}
+
+**Hallazgos (EDA):**
+1) **Calidad de datos:** sin duplicados completos; nulos concentrados en `hashtags` y en menor medida en `toxicity_score`.  
+2) **Distribución de `toxicity_score`:** rango [0,1]; la forma de la distribución afecta el balance al binarizar (umbral 0.5).  
+3) **Categóricas y texto:** `source` está concentrada en pocas categorías; el top de tokens muestra vocabulario útil para representación TF-IDF.
+
+
+# Preprocesamiento
+
+```{python}
+# === Preprocesamiento: limpieza de texto (versión estable y sin errores) ===
+
+import pandas as pd
+import re
+
+# Copiamos el texto original a una variable temporal
+
+s = df[TEXT_COL].fillna("").astype(str).str.lower()
+
+# 1. Elimina URLs (http, https, www)
+
+s = s.str.replace(r'https?://\S+|[www.\S+](http://www.\S+)', ' ', regex=True)
+
+# 2. Elimina menciones @usuario
+
+s = s.str.replace(r'@\w+', ' ', regex=True)
+
+# 3. Quita el símbolo # pero deja la palabra
+
+s = s.str.replace('#', ' ', regex=False)
+
+# 4. Deja solo letras (con acentos y ñ/ü) y espacios
+
+s = s.str.replace(r'[^a-záéíóúñü\s]', ' ', regex=True)
+
+# 5. Colapsa espacios múltiples
+
+s = s.str.replace(r'\s+', ' ', regex=True).str.strip()
+
+# Crea la nueva columna limpia
+
+df["content_clean"] = s
+
+TEXT_USED = "content_clean"   # columna limpia para TF-IDF
+print("✅ Texto final para modelado:", TEXT_USED)
+print(df[TEXT_USED].head(3))
+
+
+```
+
+```{python}
+# === Preprocesamiento: columnas y transformador ===
+
+num_cols = [c for c in df.select_dtypes("number").columns if c != TARGET]
+cat_cols = [c for c in df.select_dtypes(include=["object","string","category"]).columns
+if c not in [TEXT_COL, TEXT_USED]]
+
+print("Numéricas:", len(num_cols))
+print("Categóricas:", len(cat_cols))
+print("Texto:", TEXT_USED)
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+
+tfidf = TfidfVectorizer(
+stop_words=spanish_stop,
+ngram_range=(1, 2),
+min_df=2,
+max_df=0.95
+)
+
+preproc = ColumnTransformer(
+transformers=[
+("text", tfidf, TEXT_USED),
+("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols),
+("num", StandardScaler(with_mean=False), num_cols),
+],
+remainder="drop",
+sparse_threshold=0.3
+)
+
+
+```
+
+**Decisiones de preprocesamiento:**
+- **Texto:** limpieza mínima (URLs, @, `#`, caracteres no alfabéticos, espacios) → columna `content_clean`.  
+- **Representación:** **TF-IDF (1–2-gramas)** con stopwords en español: balance entre interpretabilidad y desempeño.  
+- **Categóricas:** **OneHotEncoder(handle_unknown="ignore")** para robustez ante categorías nuevas.  
+- **Numéricas:** **StandardScaler(with_mean=False)** para integrarse sin conflictos a la matriz esparsa.
+- **Estructura:** **ColumnTransformer + Pipeline** para reproducibilidad y para evitar fugas de datos entre train/test.
+
+
+# Clasificación (binaria a partir de TOXICITY)
+
+
+```{python}
+# === Clasificación binaria: umbral 0.5 sobre el TARGET ===
+
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+classification_report, ConfusionMatrixDisplay, RocCurveDisplay, roc_auc_score
+)
+
+# Dataset de clasificación
+
+df_cls = df.dropna(subset=[TARGET]).copy()
+df_cls["toxic_cls"] = (df_cls[TARGET] >= 0.5).astype(int)
+
+X = df_cls.drop(columns=[TARGET, "toxic_cls"])
+y = df_cls["toxic_cls"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# Modelo: preproc (TF-IDF+OHE+escala) + Regresión Logística
+
+pipe_cls = Pipeline([
+("prep", preproc),
+("clf", LogisticRegression(max_iter=10000))
+])
+
+pipe_cls.fit(X_train, y_train)
+y_pred  = pipe_cls.predict(X_test)
+y_proba = pipe_cls.predict_proba(X_test)[:, 1]   # <- sin if/try
+
+print("=== Reporte de Clasificación (umbral 0.5) ===")
+print(classification_report(y_test, y_pred, digits=3))
+
+# Matriz de confusión
+
+fig, ax = plt.subplots(figsize=(4,4))
+ConfusionMatrixDisplay.from_predictions(y_test, y_pred, ax=ax)
+ax.set_title("Matriz de confusión — Clasificación")
+plt.tight_layout()
+plt.savefig("docs/confmat_cls.png", dpi=140, bbox_inches="tight")
+plt.close()
+
+# Curva ROC + AUC
+
+fig, ax = plt.subplots(figsize=(5,4))
+RocCurveDisplay.from_predictions(y_test, y_proba, ax=ax)
+ax.set_title("Curva ROC — Clasificación")
+plt.tight_layout()
+plt.savefig("docs/roc_cls.png", dpi=140, bbox_inches="tight")
+plt.close()
+
+auc = roc_auc_score(y_test, y_proba)
+print(f"ROC-AUC: {auc:.3f}")
+
+
+
+```
+
+**Matriz de confusión**  
+![](docs/confmat_cls.png){width=60%}
+
+**Curva ROC**  
+![](docs/roc_cls.png){width=60%}
+
+**Justificación — Clasificación:**
+- **Target binario:** `toxicity_score >= 0.5` como umbral neutro en [0,1]. Si el costo de FN/FP cambia, puede ajustarse el umbral con la curva ROC/PR.  
+- **Métricas:**  
+  - *Accuracy* como línea base.  
+  - *Precision/Recall/F1 (macro)* para evaluar equilibrio entre clases.  
+  - *ROC-AUC* para medir ranking independiente del umbral.  
+- **Lectura de la matriz de confusión:** identifica sesgos del modelo (por ejemplo, FP altos).  
+- **Curva ROC:** permite seleccionar umbral operativo según trade-off TPR/FPR.
+
+
+# Regresión (TOXICITY continua)
+
+
+```{python}
+# === Regresión: TARGET continuo ===
+
+from sklearn.linear_model import Ridge
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import numpy as np
+
+df_reg = df.dropna(subset=[TARGET]).copy()
+Xr = df_reg.drop(columns=[TARGET])
+yr = df_reg[TARGET].astype(float)
+
+Xr_train, Xr_test, yr_train, yr_test = train_test_split(
+Xr, yr, test_size=0.2, random_state=42
+)
+
+pipe_reg = Pipeline([
+("prep", preproc),
+("reg", Ridge(alpha=1.0))
+])
+
+pipe_reg.fit(Xr_train, yr_train)
+yr_pred = pipe_reg.predict(Xr_test)
+
+mae = mean_absolute_error(yr_test, yr_pred)
+mse = mean_squared_error(yr_test, yr_pred)      # compatibilidad amplia
+rmse = np.sqrt(mse)
+r2 = r2_score(yr_test, yr_pred)
+
+print(f"MAE : {mae:.4f}")
+print(f"RMSE: {rmse:.4f}")
+print(f"R²  : {r2:.4f}")
+
+# Dispersión real vs predicho
+
+fig, ax = plt.subplots(figsize=(5,4))
+ax.scatter(yr_test, yr_pred, s=8, alpha=0.6)
+ax.plot([0,1],[0,1], ls="--", c="gray")
+ax.set_xlabel(f"{TARGET} real"); ax.set_ylabel(f"{TARGET} predicha")
+ax.set_title("Regresión – Real vs Predicho")
+plt.tight_layout()
+plt.savefig("docs/reg_scatter.png", dpi=140, bbox_inches="tight")
+plt.close()
+
+# Histograma de residuales
+
+res = yr_test - yr_pred
+fig, ax = plt.subplots(figsize=(6,4))
+ax.hist(res, bins=40, edgecolor="white")
+ax.set_title("Distribución de residuales (y_real - y_pred)")
+ax.set_xlabel("Residual"); ax.set_ylabel("Frecuencia")
+plt.tight_layout()
+plt.savefig("docs/reg_resid_hist.png", dpi=140, bbox_inches="tight")
+plt.close()
+
+
+```
+
+**Regresión – Real vs. Predicho**  
+![](docs/reg_scatter.png){width=60%}
+
+**Distribución de residuales**  
+![](docs/reg_resid_hist.png){width=60%}
+
+**Justificación — Regresión:**
+- *MAE* (interpretable en unidades de toxicidad; robusto a outliers).  
+- *RMSE* (penaliza más los errores grandes).  
+- *R²* (proporción de varianza explicada).  
+- El **scatter real vs. predicho** revela sesgo/varianza; el **histograma de residuales** debería centrarse en 0 sin colas extremas.
+
+
+# Clustering (K-Means sobre texto)
+
+
+```{python}
+
+# === Clustering sobre texto: TF-IDF (solo texto limpio) + SVD(2D) para visualizar ===
+
+from sklearn.cluster import KMeans
+from sklearn.decomposition import TruncatedSVD
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Asegúrate de que TEXT_USED exista (viene del preprocesamiento); si no, usa TEXT_COL
+
+TEXT_FOR_CLUST = "content_clean" if "content_clean" in df.columns else TEXT_COL
+
+# Usamos solo filas con TARGET no nulo para poder comparar con la clase binaria
+
+df_cls = df.dropna(subset=[TARGET]).copy()
+df_cls["toxic_cls"] = (df_cls[TARGET] >= 0.5).astype(int)
+
+# TF-IDF SOLO del texto limpio
+
+tfidf_only = TfidfVectorizer(stop_words=spanish_stop, ngram_range=(1,2), min_df=2, max_df=0.95)
+X_text = tfidf_only.fit_transform(df_cls[TEXT_FOR_CLUST].fillna("").astype(str))
+
+# Reducción a 2D para graficar
+
+svd = TruncatedSVD(n_components=2, random_state=42)
+X_2d = svd.fit_transform(X_text)
+
+# K-Means (k=3 a modo de ejemplo)
+
+k = 3
+km = KMeans(n_clusters=k, random_state=42, n_init=10)
+labels = km.fit_predict(X_text)
+
+# DataFrame para visualización
+
+viz = pd.DataFrame({
+"x": X_2d[:, 0],
+"y": X_2d[:, 1],
+"cluster": labels.astype(str),
+"toxic_cls": df_cls["toxic_cls"].values
+})
+
+# Dispersión 2D coloreada por cluster (sin bucle, sin problemas de indentación)
+import numpy as np
+from matplotlib.lines import Line2D
+
+fig, ax = plt.subplots(figsize=(5, 4))
+
+# codificamos cluster -> color (0,1,2,...) y elegimos un cmap
+codes = pd.Categorical(viz["cluster"]).codes
+sc = ax.scatter(viz["x"], viz["y"], s=8, alpha=0.7, c=codes, cmap="tab10")
+
+# leyenda manual
+uniq = sorted(viz["cluster"].unique())
+handles = [Line2D([0], [0], marker='o', linestyle='', markersize=6, 
+                  color=plt.cm.tab10(i/10), label=f"C{cl}") 
+           for i, cl in enumerate(uniq)]
+ax.legend(handles=handles, title="Cluster", bbox_to_anchor=(1.02, 1), loc="upper left")
+
+ax.set_title("K-Means (TF-IDF limpio) + SVD(2D)")
+plt.tight_layout()
+plt.savefig("docs/kmeans_2d.png", dpi=140, bbox_inches="tight")
+plt.close()
+
+# Tabla de comparación cluster vs clase (filas normalizadas)
+
+tabla = pd.crosstab(viz["cluster"], viz["toxic_cls"], normalize="index").round(3)
+print("Distribución de clases por cluster (filas normalizadas):")
+print(tabla.to_string())
+
+```
+
+**K-Means sobre TF-IDF limpio (SVD 2D)**  
+![](docs/kmeans_2d.png){width=60%}
+
+**Lectura — Clustering:**
+- **Silhouette/inercia** (opcional) orientan la calidad intrínseca; aquí mostramos la separación visual en 2D (SVD).  
+- La **crosstab cluster vs. clase** indica si los clusters se alinean con la toxicidad o capturan otros ejes (temas, cuentas, contexto).  
+- Útil para exploración y segmentación previa a modelos supervisados.
+
+
+# Conclusiones
+
+**Conclusiones:**
+- **Datos:** sin duplicados; nulos manejables; texto utilizable tras limpieza ligera.  
+- **Clasificación:** modelo base (LogReg) con TF-IDF + OHE + escala; métricas reportadas y visualizaciones (confusión/ROC).  
+- **Regresión:** errores (MAE/RMSE) y ajuste (R²) razonables para una primera pasada; residuales sin patrones fuertes.  
+- **Clustering:** agrupaciones comprensibles; alineación parcial con la toxicidad.  
+**Futuro:** ajustar umbral por costos, *class_weight='balanced'*, tuning de hiperparámetros, embeddings (sentence-transformers) y modelos no lineales (árboles/GBM).

@@ -8,23 +8,31 @@ execute:
   error: true
   cache: false
   freeze: false
+  eval: false    # <- NO ejecutar celdas en este .qmd
+ 
 format:
   html:
     fig-format: png
     df-print: paged
+    embed-resources: false   # <-- solo en este .qmd
 ---
 
 ```{python}
 #| echo: true
 import sys, matplotlib
+matplotlib.use("Agg")             # <— backend offscreen
+import matplotlib.pyplot as plt
+
 print("Python:", sys.version.split()[0])
 print("Matplotlib backend:", matplotlib.get_backend())
 
-import matplotlib.pyplot as plt
+# plot de prueba (sin show; guardamos y cerramos)
 plt.plot([0,1,2],[0,1,0])
 plt.title("Gráfico de prueba")
 plt.tight_layout()
-plt.show()
+plt.savefig("docs/fig_test.png", dpi=150, bbox_inches="tight")
+plt.close()
+
 
 ```
 
@@ -210,6 +218,7 @@ print("\nProporciones:")
 print(df_bot['user_type'].value_counts(normalize=True).round(3))
 
 # --- Gráfico: Distribución de clases (user_type) ---
+
 import matplotlib.pyplot as plt
 
 ax = df_bot['user_type'].value_counts().plot(kind='bar')
@@ -217,11 +226,10 @@ plt.title('Distribución de clases (user_type)')
 plt.xlabel('Clase')
 plt.ylabel('Frecuencia')
 plt.tight_layout()
-plt.show()
 
-# (opcional) guardar la figura para tu informe/presentación
-fig = plt.gcf()
+fig = plt.gcf()                   # figura activa
 fig.savefig("docs/fig_user_type_dist.png", dpi=150, bbox_inches='tight')
+plt.close(fig)           # cerrar después de guardar
 
 ```
 
@@ -343,7 +351,6 @@ text_vectorizer = TfidfVectorizer(
 )
 
 
-
 preprocessor = ColumnTransformer(
     transformers=[
         ('text', text_vectorizer, text_col),
@@ -353,7 +360,6 @@ preprocessor = ColumnTransformer(
     remainder='drop',
     sparse_threshold=0.3
 )
-
 
 ```
 
@@ -383,28 +389,52 @@ pipe_nb_text_only = Pipeline([
 
 ```
 ## Entrenar y Evaluar
-
 ```{python}
+#| echo: false
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 
-# 1) Logistic Regression con todas las features
+# --- 1) Logistic Regression (texto + meta) ---
+
 pipe_lr.fit(X_train, y_train)
 y_pred_lr = pipe_lr.predict(X_test)
+
 print("=== Logistic Regression (texto + meta) ===")
 print(classification_report(y_test, y_pred_lr, digits=3))
-ConfusionMatrixDisplay.from_predictions(y_test, y_pred_lr)
+
+disp_lr = ConfusionMatrixDisplay.from_predictions(y_test, y_pred_lr)
+disp_lr.plot()
+plt.tight_layout()
+
+# muestra en el preview (como en 'Incidentes')
+
 plt.show()
 
-# 2) Naive Bayes solo texto
+# y también guarda para GitHub Pages
+
+plt.savefig("docs/confmat_lr.png", dpi=150, bbox_inches="tight")
+
+# --- 2) Naive Bayes SOLO TEXTO (baseline) ---
+
 pipe_nb_text_only.fit(X_train[text_col], y_train)
 y_pred_nb = pipe_nb_text_only.predict(X_test[text_col])
+
 print("\n=== MultinomialNB (solo texto) ===")
 print(classification_report(y_test, y_pred_nb, digits=3))
-ConfusionMatrixDisplay.from_predictions(y_test, y_pred_nb)
+
+disp_nb = ConfusionMatrixDisplay.from_predictions(y_test, y_pred_nb)
+disp_nb.plot()
+plt.tight_layout()
 plt.show()
+plt.savefig("docs/confmat_nb.png", dpi=150, bbox_inches="tight")
 
 ```
+
+
+### Matrices de confusión
+![](confmat_lr.png){width=60%}
+![](confmat_nb.png){width=60%}
+
 
 
 # Resultados y Análisis
@@ -434,3 +464,19 @@ El uso de **bigramas** y **stopwords en español** mejoró la señal textual, y 
 - Refinar la heurística del target con detección semiautomática.
 - Evaluar interpretabilidad con `coef_` de LR (palabras más predictivas).
 - Publicar resultados interactivos en el dashboard Quarto.
+
+
+# --- Liberar modelo spaCy y recursos en Quarto ---
+
+```{python}
+try:
+    import spacy
+    from spacy.util import fix_random_seed
+    import gc
+    nlp = None
+    gc.collect()
+    print("SpaCy cerrado correctamente.")
+except Exception as e:
+    print("Error al liberar spaCy:", e)
+
+```

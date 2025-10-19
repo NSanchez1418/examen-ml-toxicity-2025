@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>K-means – Machine Learning — Proyecto</title>
+<title>prueba – Machine Learning — Proyecto</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3917,11 +3917,15 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
     <a class="dropdown-item" href="./tweets_classification.html">
  <span class="dropdown-text">Tweets Classification</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./regresion_pm25.html">
+ <span class="dropdown-text">Regresión</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./regresion_pm25.html"> 
-<span class="menu-text">Regresión</span></a>
+    <a class="nav-link" href="./examen_ml.html"> 
+<span class="menu-text">Examen (TOXICITY)</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -3934,83 +3938,29 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#importar-librerías" id="toc-importar-librerías" class="nav-link active" data-scroll-target="#importar-librerías">Importar librerías</a></li>
-  <li><a href="#carga-de-datos" id="toc-carga-de-datos" class="nav-link" data-scroll-target="#carga-de-datos">Carga de datos</a></li>
-  <li><a href="#visualizar-los-datos" id="toc-visualizar-los-datos" class="nav-link" data-scroll-target="#visualizar-los-datos">Visualizar los datos</a></li>
-  <li><a href="#k-means-sin-estandarización" id="toc-k-means-sin-estandarización" class="nav-link" data-scroll-target="#k-means-sin-estandarización">K-means sin Estandarización</a>
-  <ul class="collapse">
-  <li><a href="#método-del-codo-elbow" id="toc-método-del-codo-elbow" class="nav-link" data-scroll-target="#método-del-codo-elbow">Método del codo (Elbow)</a>
-  <ul class="collapse">
-  <li><a href="#calcular-el-sum-of-squared-errors-sse" id="toc-calcular-el-sum-of-squared-errors-sse" class="nav-link" data-scroll-target="#calcular-el-sum-of-squared-errors-sse">Calcular el Sum of Squared Errors (SSE)</a></li>
-  <li><a href="#visualizar-el-sum-of-squared-errors-sse-vs-k" id="toc-visualizar-el-sum-of-squared-errors-sse-vs-k" class="nav-link" data-scroll-target="#visualizar-el-sum-of-squared-errors-sse-vs-k">Visualizar el Sum of Squared Errors (SSE) vs K</a></li>
-  </ul></li>
-  <li><a href="#clusterización" id="toc-clusterización" class="nav-link" data-scroll-target="#clusterización">Clusterización</a>
-  <ul class="collapse">
-  <li><a href="#visualizar-la-clusterización" id="toc-visualizar-la-clusterización" class="nav-link" data-scroll-target="#visualizar-la-clusterización">Visualizar la clusterización</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#k-means-con-estandarización-pipeline" id="toc-k-means-con-estandarización-pipeline" class="nav-link" data-scroll-target="#k-means-con-estandarización-pipeline">K-means con Estandarización + Pipeline</a>
-  <ul class="collapse">
-  <li><a href="#columntransformer" id="toc-columntransformer" class="nav-link" data-scroll-target="#columntransformer">ColumnTransformer</a></li>
-  <li><a href="#pipeline" id="toc-pipeline" class="nav-link" data-scroll-target="#pipeline">Pipeline</a></li>
-  <li><a href="#método-del-codo-elbow-silhouette" id="toc-método-del-codo-elbow-silhouette" class="nav-link" data-scroll-target="#método-del-codo-elbow-silhouette">Método del codo (Elbow) + Silhouette</a>
-  <ul class="collapse">
-  <li><a href="#calcular-el-sum-of-squared-errors-sse-silhouette" id="toc-calcular-el-sum-of-squared-errors-sse-silhouette" class="nav-link" data-scroll-target="#calcular-el-sum-of-squared-errors-sse-silhouette">Calcular el Sum of Squared Errors (SSE) + Silhouette</a></li>
-  </ul></li>
-  <li><a href="#visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k" id="toc-visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k" class="nav-link" data-scroll-target="#visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k">Visualizar el Sum of Squared Errors (SSE), Silhouette vs K</a></li>
-  <li><a href="#clusterizacion-con-pipeline-standardscaler" id="toc-clusterizacion-con-pipeline-standardscaler" class="nav-link" data-scroll-target="#clusterizacion-con-pipeline-standardscaler">Clusterizacion con Pipeline + StandardScaler()</a></li>
-  <li><a href="#visualizar-la-clusterización-1" id="toc-visualizar-la-clusterización-1" class="nav-link" data-scroll-target="#visualizar-la-clusterización-1">Visualizar la clusterización</a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">K-means</h1>
+
+
+
+<div id="c6d4facd" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/erickedu85/dataset/refs/heads/master/tweets/1500_tweets_con_toxicity.csv&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url, low_memory<span class="op">=</span><span class="va">False</span>) <span class="co"># low_memory=False evita dtypes raros</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>display(df.head(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>(1500, 27)</code></pre>
 </div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="importar-librerías" class="level1">
-<h1>Importar librerías</h1>
-<div id="edfc1d7f" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#---</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="carga-de-datos" class="level1">
-<h1>Carga de datos</h1>
-<div id="7c01f706" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;https://raw.githubusercontent.com/erickedu85/dataset/master/age_income.csv&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -4018,773 +3968,111 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">age</th>
-<th data-quarto-table-cell-role="th">annual_income($)</th>
+<th data-quarto-table-cell-role="th">tweetId</th>
+<th data-quarto-table-cell-role="th">tweetUrl</th>
+<th data-quarto-table-cell-role="th">content</th>
+<th data-quarto-table-cell-role="th">isReply</th>
+<th data-quarto-table-cell-role="th">replyTo</th>
+<th data-quarto-table-cell-role="th">createdAt</th>
+<th data-quarto-table-cell-role="th">authorId</th>
+<th data-quarto-table-cell-role="th">authorName</th>
+<th data-quarto-table-cell-role="th">authorUsername</th>
+<th data-quarto-table-cell-role="th">authorVerified</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">inReplyToId</th>
+<th data-quarto-table-cell-role="th">Date</th>
+<th data-quarto-table-cell-role="th">time_response</th>
+<th data-quarto-table-cell-role="th">account_age_days</th>
+<th data-quarto-table-cell-role="th">mentions_count</th>
+<th data-quarto-table-cell-role="th">hashtags_count</th>
+<th data-quarto-table-cell-role="th">content_length</th>
+<th data-quarto-table-cell-role="th">has_profile_picture</th>
+<th data-quarto-table-cell-role="th">sentiment_polarity</th>
+<th data-quarto-table-cell-role="th">toxicity_score</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
-<td>17</td>
-<td>17123</td>
+<td>1878630970745900800</td>
+<td>https://x.com/Pableins15/status/18786309707459...</td>
+<td>@DanielNoboaOk @DiegoBorjaPC Lávate el hocico ...</td>
+<td>True</td>
+<td>DanielNoboaOk</td>
+<td>2025-01-13 02:31:00</td>
+<td>176948611</td>
+<td>Pablo Balarezo</td>
+<td>Pableins15</td>
+<td>False</td>
+<td>...</td>
+<td>1878539079249547520</td>
+<td>2025-01-12 20:26:32</td>
+<td>364.466667</td>
+<td>5261</td>
+<td>2</td>
+<td>0</td>
+<td>309</td>
+<td>False</td>
+<td>0.0</td>
+<td>0.543256</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
-<td>17</td>
-<td>18375</td>
+<td>1904041877503984128</td>
+<td>https://x.com/solma1201/status/190404187750398...</td>
+<td>@DanielNoboaOk De esa arrastrada no te levanta...</td>
+<td>True</td>
+<td>DanielNoboaOk</td>
+<td>2025-03-24 05:25:00</td>
+<td>1368663286582030336</td>
+<td>Solma1201</td>
+<td>solma1201</td>
+<td>False</td>
+<td>...</td>
+<td>1904003201143115776</td>
+<td>2025-03-24 02:51:52</td>
+<td>153.133333</td>
+<td>1399</td>
+<td>1</td>
+<td>0</td>
+<td>70</td>
+<td>True</td>
+<td>0.0</td>
+<td>0.426917</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
-<td>16</td>
-<td>18557</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>23</td>
-<td>17721</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>22</td>
-<td>17291</td>
+<td>1877463444649046016</td>
+<td>https://x.com/Mediterran67794/status/187746344...</td>
+<td>@LuisaGonzalezEc @RC5Oficial Protegiendo a los...</td>
+<td>True</td>
+<td>LuisaGonzalezEc</td>
+<td>2025-01-09 21:12:00</td>
+<td>1851005619106451712</td>
+<td>Médico Escritor Filósofo Hermeneútico</td>
+<td>Mediterran67794</td>
+<td>False</td>
+<td>...</td>
+<td>1877158437236228352</td>
+<td>2025-01-09 01:00:22</td>
+<td>1211.633333</td>
+<td>68</td>
+<td>2</td>
+<td>0</td>
+<td>122</td>
+<td>True</td>
+<td>0.0</td>
+<td>0.555970</td>
 </tr>
 </tbody>
 </table>
 
+<p>3 rows × 27 columns</p>
 </div>
 </div>
 </div>
-</section>
-<section id="visualizar-los-datos" class="level1">
-<h1>Visualizar los datos</h1>
-<div id="44fc04d8" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(df).mark_circle(size<span class="op">=</span><span class="dv">20</span>).encode(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">&#39;age&#39;</span>),</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">&#39;annual_income($)&#39;</span>),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">&#39;age&#39;</span>,<span class="st">&#39;annual_income($)&#39;</span>]</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>).interactive()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-
-<style>
-#altair-viz-cca3c9184e824535abb815a045c2d28b.vega-embed {
-width: 100%;
-display: flex;
-}
-#altair-viz-cca3c9184e824535abb815a045c2d28b.vega-embed details,
-#altair-viz-cca3c9184e824535abb815a045c2d28b.vega-embed details summary {
-position: relative;
-}
-</style>
-<div id="altair-viz-cca3c9184e824535abb815a045c2d28b"></div>
-<script type="text/javascript">
-  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
-  (function(spec, embedOpt){
-    let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-cca3c9184e824535abb815a045c2d28b") {
-      outputDiv = document.getElementById("altair-viz-cca3c9184e824535abb815a045c2d28b");
-    }
-
-    const paths = {
-      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
-      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
-      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
-      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
-    };
-
-    function maybeLoadScript(lib, version) {
-      var key = `${lib.replace("-", "")}_version`;
-      return (VEGA_DEBUG[key] == version) ?
-        Promise.resolve(paths[lib]) :
-        new Promise(function(resolve, reject) {
-          var s = document.createElement('script');
-          document.getElementsByTagName("head")[0].appendChild(s);
-          s.async = true;
-          s.onload = () => {
-            VEGA_DEBUG[key] = version;
-            return resolve(paths[lib]);
-          };
-          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
-          s.src = paths[lib];
-        });
-    }
-
-    function showError(err) {
-      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
-      throw err;
-    }
-
-    function displayChart(vegaEmbed) {
-      vegaEmbed(outputDiv, spec, embedOpt)
-        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
-    }
-
-    if(typeof define === "function" && define.amd) {
-      requirejs.config({paths});
-      let deps = ["vega-embed"];
-      require(deps, displayChart, err => showError(`Error loading script: ${err.message}`));
-    } else {
-      maybeLoadScript("vega", "5")
-        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
-        .then(() => maybeLoadScript("vega-embed", "6"))
-        .catch(showError)
-        .then(() => displayChart(vegaEmbed));
-    }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-392afb6aa6fa6941eb5b95af048fda64"}, "mark": {"type": "circle", "size": 20}, "encoding": {"tooltip": [{"field": "age", "type": "quantitative"}, {"field": "annual_income($)", "type": "quantitative"}], "x": {"field": "age", "type": "quantitative"}, "y": {"field": "annual_income($)", "type": "quantitative"}}, "params": [{"name": "param_1", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales"}], "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-392afb6aa6fa6941eb5b95af048fda64": [{"age": 17, "annual_income($)": 17123}, {"age": 17, "annual_income($)": 18375}, {"age": 16, "annual_income($)": 18557}, {"age": 23, "annual_income($)": 17721}, {"age": 22, "annual_income($)": 17291}, {"age": 23, "annual_income($)": 19060}, {"age": 23, "annual_income($)": 17654}, {"age": 24, "annual_income($)": 19456}, {"age": 24, "annual_income($)": 18398}, {"age": 21, "annual_income($)": 17106}, {"age": 17, "annual_income($)": 17194}, {"age": 17, "annual_income($)": 18029}, {"age": 16, "annual_income($)": 17972}, {"age": 22, "annual_income($)": 19702}, {"age": 24, "annual_income($)": 19052}, {"age": 19, "annual_income($)": 19785}, {"age": 20, "annual_income($)": 17805}, {"age": 24, "annual_income($)": 18826}, {"age": 21, "annual_income($)": 17721}, {"age": 18, "annual_income($)": 18928}, {"age": 21, "annual_income($)": 17474}, {"age": 16, "annual_income($)": 18336}, {"age": 17, "annual_income($)": 17873}, {"age": 23, "annual_income($)": 19594}, {"age": 23, "annual_income($)": 18889}, {"age": 23, "annual_income($)": 19225}, {"age": 21, "annual_income($)": 19603}, {"age": 17, "annual_income($)": 18219}, {"age": 20, "annual_income($)": 17370}, {"age": 17, "annual_income($)": 19829}, {"age": 34, "annual_income($)": 21979}, {"age": 25, "annual_income($)": 22057}, {"age": 33, "annual_income($)": 20524}, {"age": 33, "annual_income($)": 21366}, {"age": 28, "annual_income($)": 20946}, {"age": 33, "annual_income($)": 21997}, {"age": 27, "annual_income($)": 20858}, {"age": 33, "annual_income($)": 21689}, {"age": 25, "annual_income($)": 21979}, {"age": 25, "annual_income($)": 20696}, {"age": 27, "annual_income($)": 20910}, {"age": 33, "annual_income($)": 20890}, {"age": 30, "annual_income($)": 21634}, {"age": 29, "annual_income($)": 20966}, {"age": 32, "annual_income($)": 20853}, {"age": 31, "annual_income($)": 21221}, {"age": 28, "annual_income($)": 21456}, {"age": 33, "annual_income($)": 20779}, {"age": 30, "annual_income($)": 21706}, {"age": 30, "annual_income($)": 21540}, {"age": 33, "annual_income($)": 22229}, {"age": 26, "annual_income($)": 22895}, {"age": 29, "annual_income($)": 21330}, {"age": 31, "annual_income($)": 21719}, {"age": 28, "annual_income($)": 20843}, {"age": 25, "annual_income($)": 20834}, {"age": 30, "annual_income($)": 20595}, {"age": 35, "annual_income($)": 22257}, {"age": 34, "annual_income($)": 21988}, {"age": 30, "annual_income($)": 21663}, {"age": 38, "annual_income($)": 23932}, {"age": 36, "annual_income($)": 24530}, {"age": 37, "annual_income($)": 26394}, {"age": 43, "annual_income($)": 26633}, {"age": 41, "annual_income($)": 26085}, {"age": 44, "annual_income($)": 24346}, {"age": 49, "annual_income($)": 25409}, {"age": 47, "annual_income($)": 25071}, {"age": 38, "annual_income($)": 23653}, {"age": 47, "annual_income($)": 25490}, {"age": 42, "annual_income($)": 24607}, {"age": 44, "annual_income($)": 25631}, {"age": 49, "annual_income($)": 23439}, {"age": 41, "annual_income($)": 23759}, {"age": 47, "annual_income($)": 26298}, {"age": 42, "annual_income($)": 25369}, {"age": 40, "annual_income($)": 24200}, {"age": 48, "annual_income($)": 24458}, {"age": 47, "annual_income($)": 24782}, {"age": 45, "annual_income($)": 23224}, {"age": 45, "annual_income($)": 23563}, {"age": 38, "annual_income($)": 27019}, {"age": 44, "annual_income($)": 24286}, {"age": 48, "annual_income($)": 26205}, {"age": 38, "annual_income($)": 25533}, {"age": 41, "annual_income($)": 25240}, {"age": 46, "annual_income($)": 27004}, {"age": 41, "annual_income($)": 25595}, {"age": 47, "annual_income($)": 27520}, {"age": 40, "annual_income($)": 24971}, {"age": 60, "annual_income($)": 24144}, {"age": 51, "annual_income($)": 24470}, {"age": 52, "annual_income($)": 23958}, {"age": 51, "annual_income($)": 23337}, {"age": 63, "annual_income($)": 24664}, {"age": 61, "annual_income($)": 23476}, {"age": 51, "annual_income($)": 24265}, {"age": 57, "annual_income($)": 23630}, {"age": 50, "annual_income($)": 24006}, {"age": 51, "annual_income($)": 23793}, {"age": 50, "annual_income($)": 24380}, {"age": 51, "annual_income($)": 24181}, {"age": 57, "annual_income($)": 24479}, {"age": 52, "annual_income($)": 24014}, {"age": 63, "annual_income($)": 23794}, {"age": 55, "annual_income($)": 24135}, {"age": 60, "annual_income($)": 24673}, {"age": 51, "annual_income($)": 24714}, {"age": 52, "annual_income($)": 24086}, {"age": 62, "annual_income($)": 23106}, {"age": 64, "annual_income($)": 23609}, {"age": 52, "annual_income($)": 23994}, {"age": 52, "annual_income($)": 24659}, {"age": 53, "annual_income($)": 23595}, {"age": 54, "annual_income($)": 24306}, {"age": 54, "annual_income($)": 23926}, {"age": 62, "annual_income($)": 23856}, {"age": 55, "annual_income($)": 24394}, {"age": 52, "annual_income($)": 24061}, {"age": 61, "annual_income($)": 23893}, {"age": 57, "annual_income($)": 21471}, {"age": 59, "annual_income($)": 21624}, {"age": 75, "annual_income($)": 20589}, {"age": 73, "annual_income($)": 21181}, {"age": 73, "annual_income($)": 21534}, {"age": 69, "annual_income($)": 20514}, {"age": 73, "annual_income($)": 20577}, {"age": 73, "annual_income($)": 21015}, {"age": 66, "annual_income($)": 21962}, {"age": 67, "annual_income($)": 22054}, {"age": 66, "annual_income($)": 21492}, {"age": 75, "annual_income($)": 20808}, {"age": 68, "annual_income($)": 21366}, {"age": 74, "annual_income($)": 21335}, {"age": 75, "annual_income($)": 22459}, {"age": 75, "annual_income($)": 21232}, {"age": 75, "annual_income($)": 21892}, {"age": 70, "annual_income($)": 21750}, {"age": 69, "annual_income($)": 21986}, {"age": 74, "annual_income($)": 20341}, {"age": 73, "annual_income($)": 22041}, {"age": 68, "annual_income($)": 22123}, {"age": 71, "annual_income($)": 21562}, {"age": 69, "annual_income($)": 20841}, {"age": 67, "annual_income($)": 20834}, {"age": 66, "annual_income($)": 21653}, {"age": 75, "annual_income($)": 20631}, {"age": 74, "annual_income($)": 20572}, {"age": 69, "annual_income($)": 21452}, {"age": 73, "annual_income($)": 20754}]}}, {"mode": "vega-lite"});
-</script>
-</div>
-</div>
-</section>
-<section id="k-means-sin-estandarización" class="level1">
-<h1>K-means sin Estandarización</h1>
-<section id="método-del-codo-elbow" class="level2">
-<h2 class="anchored" data-anchor-id="método-del-codo-elbow">Método del codo (Elbow)</h2>
-<section id="calcular-el-sum-of-squared-errors-sse" class="level3">
-<h3 class="anchored" data-anchor-id="calcular-el-sum-of-squared-errors-sse">Calcular el Sum of Squared Errors (SSE)</h3>
-<div id="b5bdaf16" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sse <span class="op">=</span> [] <span class="co">#inertia</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>k_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">11</span>) <span class="co">#valores posibles de k</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_range:</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k,random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    kmeans.fit(df[[<span class="st">&#39;age&#39;</span>,<span class="st">&#39;annual_income($)&#39;</span>]])</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    sse.append(kmeans.inertia_)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Inertia:</span><span class="ch">\n</span><span class="st">&quot;</span>,sse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Inertia:
- [275802340.8465648, 103879919.55, 82797577.45817567, 38460868.83850575, 27144269.551419172, 19757179.065581053, 14468762.582687736, 11828359.755827505, 9333390.053670242]</code></pre>
-</div>
-</div>
-</section>
-<section id="visualizar-el-sum-of-squared-errors-sse-vs-k" class="level3">
-<h3 class="anchored" data-anchor-id="visualizar-el-sum-of-squared-errors-sse-vs-k">Visualizar el Sum of Squared Errors (SSE) vs K</h3>
-<div id="5d8a3d40" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>elbow_df <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;K&#39;</span>:<span class="bu">list</span>(k_range),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;SSE&#39;</span>:sse</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># elbow_df</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>alt.Chart(elbow_df).mark_line(point<span class="op">=</span><span class="va">True</span>).encode(</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">&quot;K&quot;</span>),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">&quot;SSE&quot;</span>),</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">&quot;K&quot;</span>,<span class="st">&quot;SSE&quot;</span>]</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&quot;Método del Codo&quot;</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>).interactive()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-
-<style>
-#altair-viz-4c69d23e877c410e93ba6b2d3de68426.vega-embed {
-width: 100%;
-display: flex;
-}
-#altair-viz-4c69d23e877c410e93ba6b2d3de68426.vega-embed details,
-#altair-viz-4c69d23e877c410e93ba6b2d3de68426.vega-embed details summary {
-position: relative;
-}
-</style>
-<div id="altair-viz-4c69d23e877c410e93ba6b2d3de68426"></div>
-<script type="text/javascript">
-  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
-  (function(spec, embedOpt){
-    let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-4c69d23e877c410e93ba6b2d3de68426") {
-      outputDiv = document.getElementById("altair-viz-4c69d23e877c410e93ba6b2d3de68426");
-    }
-
-    const paths = {
-      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
-      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
-      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
-      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
-    };
-
-    function maybeLoadScript(lib, version) {
-      var key = `${lib.replace("-", "")}_version`;
-      return (VEGA_DEBUG[key] == version) ?
-        Promise.resolve(paths[lib]) :
-        new Promise(function(resolve, reject) {
-          var s = document.createElement('script');
-          document.getElementsByTagName("head")[0].appendChild(s);
-          s.async = true;
-          s.onload = () => {
-            VEGA_DEBUG[key] = version;
-            return resolve(paths[lib]);
-          };
-          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
-          s.src = paths[lib];
-        });
-    }
-
-    function showError(err) {
-      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
-      throw err;
-    }
-
-    function displayChart(vegaEmbed) {
-      vegaEmbed(outputDiv, spec, embedOpt)
-        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
-    }
-
-    if(typeof define === "function" && define.amd) {
-      requirejs.config({paths});
-      let deps = ["vega-embed"];
-      require(deps, displayChart, err => showError(`Error loading script: ${err.message}`));
-    } else {
-      maybeLoadScript("vega", "5")
-        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
-        .then(() => maybeLoadScript("vega-embed", "6"))
-        .catch(showError)
-        .then(() => displayChart(vegaEmbed));
-    }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-bba20f1e9cdc222d25ee9f0069cf0400"}, "mark": {"type": "line", "point": true}, "encoding": {"tooltip": [{"field": "K", "type": "quantitative"}, {"field": "SSE", "type": "quantitative"}], "x": {"field": "K", "type": "quantitative"}, "y": {"field": "SSE", "type": "quantitative"}}, "params": [{"name": "param_2", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales"}], "title": "M\u00e9todo del Codo", "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-bba20f1e9cdc222d25ee9f0069cf0400": [{"K": 2, "SSE": 275802340.8465648}, {"K": 3, "SSE": 103879919.55}, {"K": 4, "SSE": 82797577.45817567}, {"K": 5, "SSE": 38460868.83850575}, {"K": 6, "SSE": 27144269.551419172}, {"K": 7, "SSE": 19757179.065581053}, {"K": 8, "SSE": 14468762.582687736}, {"K": 9, "SSE": 11828359.755827505}, {"K": 10, "SSE": 9333390.053670242}]}}, {"mode": "vega-lite"});
-</script>
-</div>
-</div>
-</section>
-</section>
-<section id="clusterización" class="level2">
-<h2 class="anchored" data-anchor-id="clusterización">Clusterización</h2>
-<div id="b4807d17" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>k_clusters <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k_clusters,random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;clusters&#39;</span>] <span class="op">=</span> clusters.fit_predict(df[[<span class="st">&#39;age&#39;</span>,<span class="st">&#39;annual_income($)&#39;</span>]])</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
-<div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">age</th>
-<th data-quarto-table-cell-role="th">annual_income($)</th>
-<th data-quarto-table-cell-role="th">clusters</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>17</td>
-<td>17123</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>17</td>
-<td>18375</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>16</td>
-<td>18557</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>23</td>
-<td>17721</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>22</td>
-<td>17291</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<section id="visualizar-la-clusterización" class="level3">
-<h3 class="anchored" data-anchor-id="visualizar-la-clusterización">Visualizar la clusterización</h3>
-<div id="17b9a40e" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(df).mark_circle(size<span class="op">=</span><span class="dv">20</span>).encode(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">&#39;age&#39;</span>),</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">&#39;annual_income($)&#39;</span>),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    alt.Color(<span class="st">&#39;clusters:N&#39;</span>),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">&#39;age&#39;</span>,<span class="st">&#39;annual_income($)&#39;</span>,<span class="st">&#39;clusters:N&#39;</span>]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&#39;CLUSTERIZACION&#39;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>).interactive()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
-
-<style>
-#altair-viz-6d6d04b1871648a297e8094bf85224dc.vega-embed {
-width: 100%;
-display: flex;
-}
-#altair-viz-6d6d04b1871648a297e8094bf85224dc.vega-embed details,
-#altair-viz-6d6d04b1871648a297e8094bf85224dc.vega-embed details summary {
-position: relative;
-}
-</style>
-<div id="altair-viz-6d6d04b1871648a297e8094bf85224dc"></div>
-<script type="text/javascript">
-  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
-  (function(spec, embedOpt){
-    let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-6d6d04b1871648a297e8094bf85224dc") {
-      outputDiv = document.getElementById("altair-viz-6d6d04b1871648a297e8094bf85224dc");
-    }
-
-    const paths = {
-      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
-      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
-      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
-      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
-    };
-
-    function maybeLoadScript(lib, version) {
-      var key = `${lib.replace("-", "")}_version`;
-      return (VEGA_DEBUG[key] == version) ?
-        Promise.resolve(paths[lib]) :
-        new Promise(function(resolve, reject) {
-          var s = document.createElement('script');
-          document.getElementsByTagName("head")[0].appendChild(s);
-          s.async = true;
-          s.onload = () => {
-            VEGA_DEBUG[key] = version;
-            return resolve(paths[lib]);
-          };
-          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
-          s.src = paths[lib];
-        });
-    }
-
-    function showError(err) {
-      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
-      throw err;
-    }
-
-    function displayChart(vegaEmbed) {
-      vegaEmbed(outputDiv, spec, embedOpt)
-        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
-    }
-
-    if(typeof define === "function" && define.amd) {
-      requirejs.config({paths});
-      let deps = ["vega-embed"];
-      require(deps, displayChart, err => showError(`Error loading script: ${err.message}`));
-    } else {
-      maybeLoadScript("vega", "5")
-        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
-        .then(() => maybeLoadScript("vega-embed", "6"))
-        .catch(showError)
-        .then(() => displayChart(vegaEmbed));
-    }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-7c48570beba5931a1b96ac5ae8552ece"}, "mark": {"type": "circle", "size": 20}, "encoding": {"color": {"field": "clusters", "type": "nominal"}, "tooltip": [{"field": "age", "type": "quantitative"}, {"field": "annual_income($)", "type": "quantitative"}, {"field": "clusters", "type": "nominal"}], "x": {"field": "age", "type": "quantitative"}, "y": {"field": "annual_income($)", "type": "quantitative"}}, "params": [{"name": "param_3", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales"}], "title": "CLUSTERIZACION", "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-7c48570beba5931a1b96ac5ae8552ece": [{"age": 17, "annual_income($)": 17123, "clusters": 2}, {"age": 17, "annual_income($)": 18375, "clusters": 2}, {"age": 16, "annual_income($)": 18557, "clusters": 2}, {"age": 23, "annual_income($)": 17721, "clusters": 2}, {"age": 22, "annual_income($)": 17291, "clusters": 2}, {"age": 23, "annual_income($)": 19060, "clusters": 2}, {"age": 23, "annual_income($)": 17654, "clusters": 2}, {"age": 24, "annual_income($)": 19456, "clusters": 2}, {"age": 24, "annual_income($)": 18398, "clusters": 2}, {"age": 21, "annual_income($)": 17106, "clusters": 2}, {"age": 17, "annual_income($)": 17194, "clusters": 2}, {"age": 17, "annual_income($)": 18029, "clusters": 2}, {"age": 16, "annual_income($)": 17972, "clusters": 2}, {"age": 22, "annual_income($)": 19702, "clusters": 2}, {"age": 24, "annual_income($)": 19052, "clusters": 2}, {"age": 19, "annual_income($)": 19785, "clusters": 2}, {"age": 20, "annual_income($)": 17805, "clusters": 2}, {"age": 24, "annual_income($)": 18826, "clusters": 2}, {"age": 21, "annual_income($)": 17721, "clusters": 2}, {"age": 18, "annual_income($)": 18928, "clusters": 2}, {"age": 21, "annual_income($)": 17474, "clusters": 2}, {"age": 16, "annual_income($)": 18336, "clusters": 2}, {"age": 17, "annual_income($)": 17873, "clusters": 2}, {"age": 23, "annual_income($)": 19594, "clusters": 2}, {"age": 23, "annual_income($)": 18889, "clusters": 2}, {"age": 23, "annual_income($)": 19225, "clusters": 2}, {"age": 21, "annual_income($)": 19603, "clusters": 2}, {"age": 17, "annual_income($)": 18219, "clusters": 2}, {"age": 20, "annual_income($)": 17370, "clusters": 2}, {"age": 17, "annual_income($)": 19829, "clusters": 2}, {"age": 34, "annual_income($)": 21979, "clusters": 0}, {"age": 25, "annual_income($)": 22057, "clusters": 0}, {"age": 33, "annual_income($)": 20524, "clusters": 0}, {"age": 33, "annual_income($)": 21366, "clusters": 0}, {"age": 28, "annual_income($)": 20946, "clusters": 0}, {"age": 33, "annual_income($)": 21997, "clusters": 0}, {"age": 27, "annual_income($)": 20858, "clusters": 0}, {"age": 33, "annual_income($)": 21689, "clusters": 0}, {"age": 25, "annual_income($)": 21979, "clusters": 0}, {"age": 25, "annual_income($)": 20696, "clusters": 0}, {"age": 27, "annual_income($)": 20910, "clusters": 0}, {"age": 33, "annual_income($)": 20890, "clusters": 0}, {"age": 30, "annual_income($)": 21634, "clusters": 0}, {"age": 29, "annual_income($)": 20966, "clusters": 0}, {"age": 32, "annual_income($)": 20853, "clusters": 0}, {"age": 31, "annual_income($)": 21221, "clusters": 0}, {"age": 28, "annual_income($)": 21456, "clusters": 0}, {"age": 33, "annual_income($)": 20779, "clusters": 0}, {"age": 30, "annual_income($)": 21706, "clusters": 0}, {"age": 30, "annual_income($)": 21540, "clusters": 0}, {"age": 33, "annual_income($)": 22229, "clusters": 0}, {"age": 26, "annual_income($)": 22895, "clusters": 0}, {"age": 29, "annual_income($)": 21330, "clusters": 0}, {"age": 31, "annual_income($)": 21719, "clusters": 0}, {"age": 28, "annual_income($)": 20843, "clusters": 0}, {"age": 25, "annual_income($)": 20834, "clusters": 0}, {"age": 30, "annual_income($)": 20595, "clusters": 0}, {"age": 35, "annual_income($)": 22257, "clusters": 0}, {"age": 34, "annual_income($)": 21988, "clusters": 0}, {"age": 30, "annual_income($)": 21663, "clusters": 0}, {"age": 38, "annual_income($)": 23932, "clusters": 1}, {"age": 36, "annual_income($)": 24530, "clusters": 1}, {"age": 37, "annual_income($)": 26394, "clusters": 1}, {"age": 43, "annual_income($)": 26633, "clusters": 1}, {"age": 41, "annual_income($)": 26085, "clusters": 1}, {"age": 44, "annual_income($)": 24346, "clusters": 1}, {"age": 49, "annual_income($)": 25409, "clusters": 1}, {"age": 47, "annual_income($)": 25071, "clusters": 1}, {"age": 38, "annual_income($)": 23653, "clusters": 1}, {"age": 47, "annual_income($)": 25490, "clusters": 1}, {"age": 42, "annual_income($)": 24607, "clusters": 1}, {"age": 44, "annual_income($)": 25631, "clusters": 1}, {"age": 49, "annual_income($)": 23439, "clusters": 1}, {"age": 41, "annual_income($)": 23759, "clusters": 1}, {"age": 47, "annual_income($)": 26298, "clusters": 1}, {"age": 42, "annual_income($)": 25369, "clusters": 1}, {"age": 40, "annual_income($)": 24200, "clusters": 1}, {"age": 48, "annual_income($)": 24458, "clusters": 1}, {"age": 47, "annual_income($)": 24782, "clusters": 1}, {"age": 45, "annual_income($)": 23224, "clusters": 1}, {"age": 45, "annual_income($)": 23563, "clusters": 1}, {"age": 38, "annual_income($)": 27019, "clusters": 1}, {"age": 44, "annual_income($)": 24286, "clusters": 1}, {"age": 48, "annual_income($)": 26205, "clusters": 1}, {"age": 38, "annual_income($)": 25533, "clusters": 1}, {"age": 41, "annual_income($)": 25240, "clusters": 1}, {"age": 46, "annual_income($)": 27004, "clusters": 1}, {"age": 41, "annual_income($)": 25595, "clusters": 1}, {"age": 47, "annual_income($)": 27520, "clusters": 1}, {"age": 40, "annual_income($)": 24971, "clusters": 1}, {"age": 60, "annual_income($)": 24144, "clusters": 1}, {"age": 51, "annual_income($)": 24470, "clusters": 1}, {"age": 52, "annual_income($)": 23958, "clusters": 1}, {"age": 51, "annual_income($)": 23337, "clusters": 1}, {"age": 63, "annual_income($)": 24664, "clusters": 1}, {"age": 61, "annual_income($)": 23476, "clusters": 1}, {"age": 51, "annual_income($)": 24265, "clusters": 1}, {"age": 57, "annual_income($)": 23630, "clusters": 1}, {"age": 50, "annual_income($)": 24006, "clusters": 1}, {"age": 51, "annual_income($)": 23793, "clusters": 1}, {"age": 50, "annual_income($)": 24380, "clusters": 1}, {"age": 51, "annual_income($)": 24181, "clusters": 1}, {"age": 57, "annual_income($)": 24479, "clusters": 1}, {"age": 52, "annual_income($)": 24014, "clusters": 1}, {"age": 63, "annual_income($)": 23794, "clusters": 1}, {"age": 55, "annual_income($)": 24135, "clusters": 1}, {"age": 60, "annual_income($)": 24673, "clusters": 1}, {"age": 51, "annual_income($)": 24714, "clusters": 1}, {"age": 52, "annual_income($)": 24086, "clusters": 1}, {"age": 62, "annual_income($)": 23106, "clusters": 1}, {"age": 64, "annual_income($)": 23609, "clusters": 1}, {"age": 52, "annual_income($)": 23994, "clusters": 1}, {"age": 52, "annual_income($)": 24659, "clusters": 1}, {"age": 53, "annual_income($)": 23595, "clusters": 1}, {"age": 54, "annual_income($)": 24306, "clusters": 1}, {"age": 54, "annual_income($)": 23926, "clusters": 1}, {"age": 62, "annual_income($)": 23856, "clusters": 1}, {"age": 55, "annual_income($)": 24394, "clusters": 1}, {"age": 52, "annual_income($)": 24061, "clusters": 1}, {"age": 61, "annual_income($)": 23893, "clusters": 1}, {"age": 57, "annual_income($)": 21471, "clusters": 0}, {"age": 59, "annual_income($)": 21624, "clusters": 0}, {"age": 75, "annual_income($)": 20589, "clusters": 0}, {"age": 73, "annual_income($)": 21181, "clusters": 0}, {"age": 73, "annual_income($)": 21534, "clusters": 0}, {"age": 69, "annual_income($)": 20514, "clusters": 0}, {"age": 73, "annual_income($)": 20577, "clusters": 0}, {"age": 73, "annual_income($)": 21015, "clusters": 0}, {"age": 66, "annual_income($)": 21962, "clusters": 0}, {"age": 67, "annual_income($)": 22054, "clusters": 0}, {"age": 66, "annual_income($)": 21492, "clusters": 0}, {"age": 75, "annual_income($)": 20808, "clusters": 0}, {"age": 68, "annual_income($)": 21366, "clusters": 0}, {"age": 74, "annual_income($)": 21335, "clusters": 0}, {"age": 75, "annual_income($)": 22459, "clusters": 0}, {"age": 75, "annual_income($)": 21232, "clusters": 0}, {"age": 75, "annual_income($)": 21892, "clusters": 0}, {"age": 70, "annual_income($)": 21750, "clusters": 0}, {"age": 69, "annual_income($)": 21986, "clusters": 0}, {"age": 74, "annual_income($)": 20341, "clusters": 0}, {"age": 73, "annual_income($)": 22041, "clusters": 0}, {"age": 68, "annual_income($)": 22123, "clusters": 0}, {"age": 71, "annual_income($)": 21562, "clusters": 0}, {"age": 69, "annual_income($)": 20841, "clusters": 0}, {"age": 67, "annual_income($)": 20834, "clusters": 0}, {"age": 66, "annual_income($)": 21653, "clusters": 0}, {"age": 75, "annual_income($)": 20631, "clusters": 0}, {"age": 74, "annual_income($)": 20572, "clusters": 0}, {"age": 69, "annual_income($)": 21452, "clusters": 0}, {"age": 73, "annual_income($)": 20754, "clusters": 0}]}}, {"mode": "vega-lite"});
-</script>
-</div>
-</div>
-</section>
-</section>
-</section>
-<section id="k-means-con-estandarización-pipeline" class="level1">
-<h1>K-means con Estandarización + Pipeline</h1>
-<section id="columntransformer" class="level2">
-<h2 class="anchored" data-anchor-id="columntransformer">ColumnTransformer</h2>
-<div id="53ee100f" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [<span class="st">&#39;age&#39;</span>,<span class="st">&#39;annual_income($)&#39;</span>]</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        (<span class="st">&#39;standar&#39;</span>,StandardScaler(),num_cols)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="pipeline">Pipeline</h2>
-<div id="0632fc26" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pipeline <span class="op">=</span> Pipeline(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        (<span class="st">&#39;scaler&#39;</span>,preprocessor),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        (<span class="st">&#39;kmeans&#39;</span>,KMeans(random_state<span class="op">=</span><span class="dv">42</span>))</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="método-del-codo-elbow-silhouette" class="level2">
-<h2 class="anchored" data-anchor-id="método-del-codo-elbow-silhouette">Método del codo (Elbow) + Silhouette</h2>
-<section id="calcular-el-sum-of-squared-errors-sse-silhouette" class="level3">
-<h3 class="anchored" data-anchor-id="calcular-el-sum-of-squared-errors-sse-silhouette">Calcular el Sum of Squared Errors (SSE) + Silhouette</h3>
-<div id="fb51533f" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>k_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">11</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sse_standar <span class="op">=</span> []</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>silhouette_scores <span class="op">=</span> []</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_range:</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    pipeline.set_params(kmeans__n_clusters<span class="op">=</span>k)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    pipeline.fit(df[num_cols])</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    sse_standar.append(</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        pipeline.named_steps[<span class="st">&#39;kmeans&#39;</span>].inertia_</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> pipeline.predict(df[num_cols])</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;K:&quot;</span>,k)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;PRED&quot;</span>,pred)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> silhouette_score(pipeline.named_steps[<span class="st">&#39;scaler&#39;</span>].transform(df[num_cols]),pred)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;SILHOUETTE SCORE&quot;</span>,score)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    silhouette_scores.append(score)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#silhouette_score</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>K: 2
-PRED [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1]
-SILHOUETTE SCORE 0.5584253334367935
-
-
-K: 3
-PRED [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1]
-SILHOUETTE SCORE 0.48862751188830494
-
-
-K: 4
-PRED [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1
- 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
- 3 3]
-SILHOUETTE SCORE 0.6197880502586566
-
-
-K: 5
-PRED [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1
- 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
- 3 3]
-SILHOUETTE SCORE 0.5870741352565944
-
-
-K: 6
-PRED [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5 5 5 5 1 5
- 5 5 5 1 5 1 1 5 5 5 5 5 5 5 5 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
- 3 3]
-SILHOUETTE SCORE 0.5496403913716196
-
-
-K: 7
-PRED [2 2 2 2 2 4 2 4 2 2 2 2 2 4 4 4 2 4 2 4 2 2 2 4 4 4 4 2 2 4 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 5 6 6 6 5 6 6 5 6 5 6 1 5
- 6 6 5 5 5 5 5 6 5 6 6 6 6 6 6 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
- 3 3]
-SILHOUETTE SCORE 0.5351154400530848
-
-
-K: 8
-PRED [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0
- 4 4 0 0 0 4 0 0 0 0 0 4 4 4 4 0 4 0 0 0 4 4 4 5 5 7 7 7 5 5 5 5 5 5 5 1 5
- 7 5 5 5 5 5 5 7 5 7 5 5 7 5 7 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- 2 2]
-SILHOUETTE SCORE 0.49714020005833653
-
-
-K: 9
-PRED [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0
- 4 4 0 0 0 4 0 0 0 0 0 4 4 4 4 0 4 0 0 0 4 4 4 8 5 7 7 7 8 5 5 8 5 5 5 8 8
- 7 5 8 8 5 8 8 7 8 7 5 5 7 5 7 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- 2 2]
-SILHOUETTE SCORE 0.48277202641477174
-
-
-K: 10
-PRED [3 3 3 3 3 6 3 6 6 3 3 3 3 6 6 6 3 6 3 6 3 3 3 6 6 6 6 3 3 6 4 4 0 4 0 4 0
- 4 4 0 0 0 4 0 0 0 4 0 4 4 4 4 0 4 0 0 0 4 4 4 9 9 7 7 5 9 5 5 9 5 9 5 8 9
- 5 5 9 8 5 9 9 7 9 5 5 5 7 5 7 5 1 8 8 8 1 1 8 1 8 8 8 8 1 8 1 8 1 8 8 1 1
- 8 8 8 8 8 1 8 8 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- 2 2]
-SILHOUETTE SCORE 0.49114927636373373
-
-</code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k" class="level2">
-<h2 class="anchored" data-anchor-id="visualizar-el-sum-of-squared-errors-sse-silhouette-vs-k">Visualizar el Sum of Squared Errors (SSE), Silhouette vs K</h2>
-<div id="bcd5a3ae" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sse_standard_df <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;K&#39;</span>:k_range,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;SSE_STANDARD&#39;</span>:sse_standar</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>silhouette_df <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;K&#39;</span>:k_range,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;SILHOUETTE&#39;</span>:silhouette_scores</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>viz_sse_standard <span class="op">=</span> alt.Chart(sse_standard_df).mark_line(point<span class="op">=</span><span class="va">True</span>).encode(</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">&#39;K&#39;</span>),</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">&#39;SSE_STANDARD&#39;</span>),</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">&#39;K&#39;</span>,<span class="st">&quot;SSE_STANDARD&quot;</span>]</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&#39;METODO DEL CODO CON PIPELINE + ESTANDARIZACION&#39;</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>).interactive()</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>viz_silhouette <span class="op">=</span> alt.Chart(silhouette_df).mark_line(point<span class="op">=</span><span class="va">True</span>).encode(</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">&#39;K&#39;</span>),</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">&#39;SILHOUETTE&#39;</span>),</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">&#39;K&#39;</span>,<span class="st">&quot;SILHOUETTE&quot;</span>]</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&#39;SILHOUETTE SCORE CON PIPELINE + ESTANDARIZACION&#39;</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>).interactive()</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>viz_sse_standard <span class="op">|</span> viz_silhouette</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
-
-<style>
-#altair-viz-e0a63f75357545318aec68ee5dd9f7b6.vega-embed {
-width: 100%;
-display: flex;
-}
-#altair-viz-e0a63f75357545318aec68ee5dd9f7b6.vega-embed details,
-#altair-viz-e0a63f75357545318aec68ee5dd9f7b6.vega-embed details summary {
-position: relative;
-}
-</style>
-<div id="altair-viz-e0a63f75357545318aec68ee5dd9f7b6"></div>
-<script type="text/javascript">
-  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
-  (function(spec, embedOpt){
-    let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e0a63f75357545318aec68ee5dd9f7b6") {
-      outputDiv = document.getElementById("altair-viz-e0a63f75357545318aec68ee5dd9f7b6");
-    }
-
-    const paths = {
-      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
-      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
-      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
-      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
-    };
-
-    function maybeLoadScript(lib, version) {
-      var key = `${lib.replace("-", "")}_version`;
-      return (VEGA_DEBUG[key] == version) ?
-        Promise.resolve(paths[lib]) :
-        new Promise(function(resolve, reject) {
-          var s = document.createElement('script');
-          document.getElementsByTagName("head")[0].appendChild(s);
-          s.async = true;
-          s.onload = () => {
-            VEGA_DEBUG[key] = version;
-            return resolve(paths[lib]);
-          };
-          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
-          s.src = paths[lib];
-        });
-    }
-
-    function showError(err) {
-      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
-      throw err;
-    }
-
-    function displayChart(vegaEmbed) {
-      vegaEmbed(outputDiv, spec, embedOpt)
-        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
-    }
-
-    if(typeof define === "function" && define.amd) {
-      requirejs.config({paths});
-      let deps = ["vega-embed"];
-      require(deps, displayChart, err => showError(`Error loading script: ${err.message}`));
-    } else {
-      maybeLoadScript("vega", "5")
-        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
-        .then(() => maybeLoadScript("vega-embed", "6"))
-        .catch(showError)
-        .then(() => displayChart(vegaEmbed));
-    }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "hconcat": [{"data": {"name": "data-5bdb746685d3d8990d134bbbe9373f2d"}, "mark": {"type": "line", "point": true}, "encoding": {"tooltip": [{"field": "K", "type": "quantitative"}, {"field": "SSE_STANDARD", "type": "quantitative"}], "x": {"field": "K", "type": "quantitative"}, "y": {"field": "SSE_STANDARD", "type": "quantitative"}}, "name": "view_1", "title": "METODO DEL CODO CON PIPELINE + ESTANDARIZACION"}, {"data": {"name": "data-cb505f885a4b566c75738ad794b4e9f9"}, "mark": {"type": "line", "point": true}, "encoding": {"tooltip": [{"field": "K", "type": "quantitative"}, {"field": "SILHOUETTE", "type": "quantitative"}], "x": {"field": "K", "type": "quantitative"}, "y": {"field": "SILHOUETTE", "type": "quantitative"}}, "name": "view_2", "title": "SILHOUETTE SCORE CON PIPELINE + ESTANDARIZACION"}], "params": [{"name": "param_4", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales", "views": ["view_1"]}, {"name": "param_5", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales", "views": ["view_2"]}], "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-5bdb746685d3d8990d134bbbe9373f2d": [{"K": 2, "SSE_STANDARD": 118.80393694233129}, {"K": 3, "SSE_STANDARD": 92.32978111596317}, {"K": 4, "SSE_STANDARD": 30.16395559024868}, {"K": 5, "SSE_STANDARD": 27.236793225474376}, {"K": 6, "SSE_STANDARD": 16.826041309207053}, {"K": 7, "SSE_STANDARD": 13.298318392945717}, {"K": 8, "SSE_STANDARD": 12.313298881458927}, {"K": 9, "SSE_STANDARD": 10.974870769747376}, {"K": 10, "SSE_STANDARD": 9.169425845038297}], "data-cb505f885a4b566c75738ad794b4e9f9": [{"K": 2, "SILHOUETTE": 0.5584253334367935}, {"K": 3, "SILHOUETTE": 0.48862751188830494}, {"K": 4, "SILHOUETTE": 0.6197880502586566}, {"K": 5, "SILHOUETTE": 0.5870741352565944}, {"K": 6, "SILHOUETTE": 0.5496403913716196}, {"K": 7, "SILHOUETTE": 0.5351154400530848}, {"K": 8, "SILHOUETTE": 0.49714020005833653}, {"K": 9, "SILHOUETTE": 0.48277202641477174}, {"K": 10, "SILHOUETTE": 0.49114927636373373}]}}, {"mode": "vega-lite"});
-</script>
-</div>
-</div>
-</section>
-<section id="clusterizacion-con-pipeline-standardscaler" class="level2">
-<h2 class="anchored" data-anchor-id="clusterizacion-con-pipeline-standardscaler">Clusterizacion con Pipeline + StandardScaler()</h2>
-<div id="0c42e26f" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>k_optimo <span class="op">=</span> k_range[silhouette_scores.index(<span class="bu">max</span>(silhouette_scores))]</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;K_OPTIMO&quot;</span>,k_optimo)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>pipeline.set_params(kmeans__n_clusters<span class="op">=</span>k_optimo)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;clusters_standard&#39;</span>] <span class="op">=</span> pipeline.fit_predict(df[num_cols])</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>K_OPTIMO 4</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="12">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">age</th>
-<th data-quarto-table-cell-role="th">annual_income($)</th>
-<th data-quarto-table-cell-role="th">clusters</th>
-<th data-quarto-table-cell-role="th">clusters_standard</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>17</td>
-<td>17123</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>17</td>
-<td>18375</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>16</td>
-<td>18557</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>23</td>
-<td>17721</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>22</td>
-<td>17291</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</section>
-<section id="visualizar-la-clusterización-1" class="level2">
-<h2 class="anchored" data-anchor-id="visualizar-la-clusterización-1">Visualizar la clusterización</h2>
-<div id="30904beb" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(df).mark_circle(size<span class="op">=</span><span class="dv">20</span>).encode(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">&#39;age&#39;</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">&#39;annual_income($)&#39;</span>),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    alt.Color(<span class="st">&#39;clusters_standard:N&#39;</span>),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">&#39;age&#39;</span>,<span class="st">&#39;annual_income($)&#39;</span>,<span class="st">&#39;clusters_standard:N&#39;</span>]</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">&#39;CLUSTERIZACION CON PIPELINE + STANDARSCALER()&#39;</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>).interactive()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-
-<style>
-#altair-viz-b53adc555e4b484eb6e700c3de8b0a75.vega-embed {
-width: 100%;
-display: flex;
-}
-#altair-viz-b53adc555e4b484eb6e700c3de8b0a75.vega-embed details,
-#altair-viz-b53adc555e4b484eb6e700c3de8b0a75.vega-embed details summary {
-position: relative;
-}
-</style>
-<div id="altair-viz-b53adc555e4b484eb6e700c3de8b0a75"></div>
-<script type="text/javascript">
-  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
-  (function(spec, embedOpt){
-    let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-b53adc555e4b484eb6e700c3de8b0a75") {
-      outputDiv = document.getElementById("altair-viz-b53adc555e4b484eb6e700c3de8b0a75");
-    }
-
-    const paths = {
-      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
-      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
-      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
-      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
-    };
-
-    function maybeLoadScript(lib, version) {
-      var key = `${lib.replace("-", "")}_version`;
-      return (VEGA_DEBUG[key] == version) ?
-        Promise.resolve(paths[lib]) :
-        new Promise(function(resolve, reject) {
-          var s = document.createElement('script');
-          document.getElementsByTagName("head")[0].appendChild(s);
-          s.async = true;
-          s.onload = () => {
-            VEGA_DEBUG[key] = version;
-            return resolve(paths[lib]);
-          };
-          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
-          s.src = paths[lib];
-        });
-    }
-
-    function showError(err) {
-      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
-      throw err;
-    }
-
-    function displayChart(vegaEmbed) {
-      vegaEmbed(outputDiv, spec, embedOpt)
-        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
-    }
-
-    if(typeof define === "function" && define.amd) {
-      requirejs.config({paths});
-      let deps = ["vega-embed"];
-      require(deps, displayChart, err => showError(`Error loading script: ${err.message}`));
-    } else {
-      maybeLoadScript("vega", "5")
-        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
-        .then(() => maybeLoadScript("vega-embed", "6"))
-        .catch(showError)
-        .then(() => displayChart(vegaEmbed));
-    }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-a82fea2b31a001bea966bef8a63b3f4a"}, "mark": {"type": "circle", "size": 20}, "encoding": {"color": {"field": "clusters_standard", "type": "nominal"}, "tooltip": [{"field": "age", "type": "quantitative"}, {"field": "annual_income($)", "type": "quantitative"}, {"field": "clusters_standard", "type": "nominal"}], "x": {"field": "age", "type": "quantitative"}, "y": {"field": "annual_income($)", "type": "quantitative"}}, "params": [{"name": "param_6", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales"}], "title": "CLUSTERIZACION CON PIPELINE + STANDARSCALER()", "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-a82fea2b31a001bea966bef8a63b3f4a": [{"age": 17, "annual_income($)": 17123, "clusters": 2, "clusters_standard": 2}, {"age": 17, "annual_income($)": 18375, "clusters": 2, "clusters_standard": 2}, {"age": 16, "annual_income($)": 18557, "clusters": 2, "clusters_standard": 2}, {"age": 23, "annual_income($)": 17721, "clusters": 2, "clusters_standard": 2}, {"age": 22, "annual_income($)": 17291, "clusters": 2, "clusters_standard": 2}, {"age": 23, "annual_income($)": 19060, "clusters": 2, "clusters_standard": 2}, {"age": 23, "annual_income($)": 17654, "clusters": 2, "clusters_standard": 2}, {"age": 24, "annual_income($)": 19456, "clusters": 2, "clusters_standard": 2}, {"age": 24, "annual_income($)": 18398, "clusters": 2, "clusters_standard": 2}, {"age": 21, "annual_income($)": 17106, "clusters": 2, "clusters_standard": 2}, {"age": 17, "annual_income($)": 17194, "clusters": 2, "clusters_standard": 2}, {"age": 17, "annual_income($)": 18029, "clusters": 2, "clusters_standard": 2}, {"age": 16, "annual_income($)": 17972, "clusters": 2, "clusters_standard": 2}, {"age": 22, "annual_income($)": 19702, "clusters": 2, "clusters_standard": 2}, {"age": 24, "annual_income($)": 19052, "clusters": 2, "clusters_standard": 2}, {"age": 19, "annual_income($)": 19785, "clusters": 2, "clusters_standard": 2}, {"age": 20, "annual_income($)": 17805, "clusters": 2, "clusters_standard": 2}, {"age": 24, "annual_income($)": 18826, "clusters": 2, "clusters_standard": 2}, {"age": 21, "annual_income($)": 17721, "clusters": 2, "clusters_standard": 2}, {"age": 18, "annual_income($)": 18928, "clusters": 2, "clusters_standard": 2}, {"age": 21, "annual_income($)": 17474, "clusters": 2, "clusters_standard": 2}, {"age": 16, "annual_income($)": 18336, "clusters": 2, "clusters_standard": 2}, {"age": 17, "annual_income($)": 17873, "clusters": 2, "clusters_standard": 2}, {"age": 23, "annual_income($)": 19594, "clusters": 2, "clusters_standard": 2}, {"age": 23, "annual_income($)": 18889, "clusters": 2, "clusters_standard": 2}, {"age": 23, "annual_income($)": 19225, "clusters": 2, "clusters_standard": 2}, {"age": 21, "annual_income($)": 19603, "clusters": 2, "clusters_standard": 2}, {"age": 17, "annual_income($)": 18219, "clusters": 2, "clusters_standard": 2}, {"age": 20, "annual_income($)": 17370, "clusters": 2, "clusters_standard": 2}, {"age": 17, "annual_income($)": 19829, "clusters": 2, "clusters_standard": 2}, {"age": 34, "annual_income($)": 21979, "clusters": 0, "clusters_standard": 0}, {"age": 25, "annual_income($)": 22057, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 20524, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 21366, "clusters": 0, "clusters_standard": 0}, {"age": 28, "annual_income($)": 20946, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 21997, "clusters": 0, "clusters_standard": 0}, {"age": 27, "annual_income($)": 20858, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 21689, "clusters": 0, "clusters_standard": 0}, {"age": 25, "annual_income($)": 21979, "clusters": 0, "clusters_standard": 0}, {"age": 25, "annual_income($)": 20696, "clusters": 0, "clusters_standard": 0}, {"age": 27, "annual_income($)": 20910, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 20890, "clusters": 0, "clusters_standard": 0}, {"age": 30, "annual_income($)": 21634, "clusters": 0, "clusters_standard": 0}, {"age": 29, "annual_income($)": 20966, "clusters": 0, "clusters_standard": 0}, {"age": 32, "annual_income($)": 20853, "clusters": 0, "clusters_standard": 0}, {"age": 31, "annual_income($)": 21221, "clusters": 0, "clusters_standard": 0}, {"age": 28, "annual_income($)": 21456, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 20779, "clusters": 0, "clusters_standard": 0}, {"age": 30, "annual_income($)": 21706, "clusters": 0, "clusters_standard": 0}, {"age": 30, "annual_income($)": 21540, "clusters": 0, "clusters_standard": 0}, {"age": 33, "annual_income($)": 22229, "clusters": 0, "clusters_standard": 0}, {"age": 26, "annual_income($)": 22895, "clusters": 0, "clusters_standard": 0}, {"age": 29, "annual_income($)": 21330, "clusters": 0, "clusters_standard": 0}, {"age": 31, "annual_income($)": 21719, "clusters": 0, "clusters_standard": 0}, {"age": 28, "annual_income($)": 20843, "clusters": 0, "clusters_standard": 0}, {"age": 25, "annual_income($)": 20834, "clusters": 0, "clusters_standard": 0}, {"age": 30, "annual_income($)": 20595, "clusters": 0, "clusters_standard": 0}, {"age": 35, "annual_income($)": 22257, "clusters": 0, "clusters_standard": 0}, {"age": 34, "annual_income($)": 21988, "clusters": 0, "clusters_standard": 0}, {"age": 30, "annual_income($)": 21663, "clusters": 0, "clusters_standard": 0}, {"age": 38, "annual_income($)": 23932, "clusters": 1, "clusters_standard": 1}, {"age": 36, "annual_income($)": 24530, "clusters": 1, "clusters_standard": 1}, {"age": 37, "annual_income($)": 26394, "clusters": 1, "clusters_standard": 1}, {"age": 43, "annual_income($)": 26633, "clusters": 1, "clusters_standard": 1}, {"age": 41, "annual_income($)": 26085, "clusters": 1, "clusters_standard": 1}, {"age": 44, "annual_income($)": 24346, "clusters": 1, "clusters_standard": 1}, {"age": 49, "annual_income($)": 25409, "clusters": 1, "clusters_standard": 1}, {"age": 47, "annual_income($)": 25071, "clusters": 1, "clusters_standard": 1}, {"age": 38, "annual_income($)": 23653, "clusters": 1, "clusters_standard": 1}, {"age": 47, "annual_income($)": 25490, "clusters": 1, "clusters_standard": 1}, {"age": 42, "annual_income($)": 24607, "clusters": 1, "clusters_standard": 1}, {"age": 44, "annual_income($)": 25631, "clusters": 1, "clusters_standard": 1}, {"age": 49, "annual_income($)": 23439, "clusters": 1, "clusters_standard": 1}, {"age": 41, "annual_income($)": 23759, "clusters": 1, "clusters_standard": 1}, {"age": 47, "annual_income($)": 26298, "clusters": 1, "clusters_standard": 1}, {"age": 42, "annual_income($)": 25369, "clusters": 1, "clusters_standard": 1}, {"age": 40, "annual_income($)": 24200, "clusters": 1, "clusters_standard": 1}, {"age": 48, "annual_income($)": 24458, "clusters": 1, "clusters_standard": 1}, {"age": 47, "annual_income($)": 24782, "clusters": 1, "clusters_standard": 1}, {"age": 45, "annual_income($)": 23224, "clusters": 1, "clusters_standard": 1}, {"age": 45, "annual_income($)": 23563, "clusters": 1, "clusters_standard": 1}, {"age": 38, "annual_income($)": 27019, "clusters": 1, "clusters_standard": 1}, {"age": 44, "annual_income($)": 24286, "clusters": 1, "clusters_standard": 1}, {"age": 48, "annual_income($)": 26205, "clusters": 1, "clusters_standard": 1}, {"age": 38, "annual_income($)": 25533, "clusters": 1, "clusters_standard": 1}, {"age": 41, "annual_income($)": 25240, "clusters": 1, "clusters_standard": 1}, {"age": 46, "annual_income($)": 27004, "clusters": 1, "clusters_standard": 1}, {"age": 41, "annual_income($)": 25595, "clusters": 1, "clusters_standard": 1}, {"age": 47, "annual_income($)": 27520, "clusters": 1, "clusters_standard": 1}, {"age": 40, "annual_income($)": 24971, "clusters": 1, "clusters_standard": 1}, {"age": 60, "annual_income($)": 24144, "clusters": 1, "clusters_standard": 1}, {"age": 51, "annual_income($)": 24470, "clusters": 1, "clusters_standard": 1}, {"age": 52, "annual_income($)": 23958, "clusters": 1, "clusters_standard": 1}, {"age": 51, "annual_income($)": 23337, "clusters": 1, "clusters_standard": 1}, {"age": 63, "annual_income($)": 24664, "clusters": 1, "clusters_standard": 1}, {"age": 61, "annual_income($)": 23476, "clusters": 1, "clusters_standard": 1}, {"age": 51, "annual_income($)": 24265, "clusters": 1, "clusters_standard": 1}, {"age": 57, "annual_income($)": 23630, "clusters": 1, "clusters_standard": 1}, {"age": 50, "annual_income($)": 24006, "clusters": 1, "clusters_standard": 1}, {"age": 51, "annual_income($)": 23793, "clusters": 1, "clusters_standard": 1}, {"age": 50, "annual_income($)": 24380, "clusters": 1, "clusters_standard": 1}, {"age": 51, "annual_income($)": 24181, "clusters": 1, "clusters_standard": 1}, {"age": 57, "annual_income($)": 24479, "clusters": 1, "clusters_standard": 1}, {"age": 52, "annual_income($)": 24014, "clusters": 1, "clusters_standard": 1}, {"age": 63, "annual_income($)": 23794, "clusters": 1, "clusters_standard": 1}, {"age": 55, "annual_income($)": 24135, "clusters": 1, "clusters_standard": 1}, {"age": 60, "annual_income($)": 24673, "clusters": 1, "clusters_standard": 1}, {"age": 51, "annual_income($)": 24714, "clusters": 1, "clusters_standard": 1}, {"age": 52, "annual_income($)": 24086, "clusters": 1, "clusters_standard": 1}, {"age": 62, "annual_income($)": 23106, "clusters": 1, "clusters_standard": 3}, {"age": 64, "annual_income($)": 23609, "clusters": 1, "clusters_standard": 1}, {"age": 52, "annual_income($)": 23994, "clusters": 1, "clusters_standard": 1}, {"age": 52, "annual_income($)": 24659, "clusters": 1, "clusters_standard": 1}, {"age": 53, "annual_income($)": 23595, "clusters": 1, "clusters_standard": 1}, {"age": 54, "annual_income($)": 24306, "clusters": 1, "clusters_standard": 1}, {"age": 54, "annual_income($)": 23926, "clusters": 1, "clusters_standard": 1}, {"age": 62, "annual_income($)": 23856, "clusters": 1, "clusters_standard": 1}, {"age": 55, "annual_income($)": 24394, "clusters": 1, "clusters_standard": 1}, {"age": 52, "annual_income($)": 24061, "clusters": 1, "clusters_standard": 1}, {"age": 61, "annual_income($)": 23893, "clusters": 1, "clusters_standard": 1}, {"age": 57, "annual_income($)": 21471, "clusters": 0, "clusters_standard": 3}, {"age": 59, "annual_income($)": 21624, "clusters": 0, "clusters_standard": 3}, {"age": 75, "annual_income($)": 20589, "clusters": 0, "clusters_standard": 3}, {"age": 73, "annual_income($)": 21181, "clusters": 0, "clusters_standard": 3}, {"age": 73, "annual_income($)": 21534, "clusters": 0, "clusters_standard": 3}, {"age": 69, "annual_income($)": 20514, "clusters": 0, "clusters_standard": 3}, {"age": 73, "annual_income($)": 20577, "clusters": 0, "clusters_standard": 3}, {"age": 73, "annual_income($)": 21015, "clusters": 0, "clusters_standard": 3}, {"age": 66, "annual_income($)": 21962, "clusters": 0, "clusters_standard": 3}, {"age": 67, "annual_income($)": 22054, "clusters": 0, "clusters_standard": 3}, {"age": 66, "annual_income($)": 21492, "clusters": 0, "clusters_standard": 3}, {"age": 75, "annual_income($)": 20808, "clusters": 0, "clusters_standard": 3}, {"age": 68, "annual_income($)": 21366, "clusters": 0, "clusters_standard": 3}, {"age": 74, "annual_income($)": 21335, "clusters": 0, "clusters_standard": 3}, {"age": 75, "annual_income($)": 22459, "clusters": 0, "clusters_standard": 3}, {"age": 75, "annual_income($)": 21232, "clusters": 0, "clusters_standard": 3}, {"age": 75, "annual_income($)": 21892, "clusters": 0, "clusters_standard": 3}, {"age": 70, "annual_income($)": 21750, "clusters": 0, "clusters_standard": 3}, {"age": 69, "annual_income($)": 21986, "clusters": 0, "clusters_standard": 3}, {"age": 74, "annual_income($)": 20341, "clusters": 0, "clusters_standard": 3}, {"age": 73, "annual_income($)": 22041, "clusters": 0, "clusters_standard": 3}, {"age": 68, "annual_income($)": 22123, "clusters": 0, "clusters_standard": 3}, {"age": 71, "annual_income($)": 21562, "clusters": 0, "clusters_standard": 3}, {"age": 69, "annual_income($)": 20841, "clusters": 0, "clusters_standard": 3}, {"age": 67, "annual_income($)": 20834, "clusters": 0, "clusters_standard": 3}, {"age": 66, "annual_income($)": 21653, "clusters": 0, "clusters_standard": 3}, {"age": 75, "annual_income($)": 20631, "clusters": 0, "clusters_standard": 3}, {"age": 74, "annual_income($)": 20572, "clusters": 0, "clusters_standard": 3}, {"age": 69, "annual_income($)": 21452, "clusters": 0, "clusters_standard": 3}, {"age": 73, "annual_income($)": 20754, "clusters": 0, "clusters_standard": 3}]}}, {"mode": "vega-lite"});
-</script>
-</div>
-</div>
-
-
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
